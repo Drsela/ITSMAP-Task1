@@ -12,4 +12,7 @@
     <string name="editActivity_userComment_HelpText">Insert comment about movie</string>
     <string name="iMDB_Rating_Placeholder">iMDB: 5.5</string>
     <string name="rating_placeholder">5.5</string>
+    <string name="details_iMDB">iMDB:\u0020 </string>
+    <string name="MOVIE_LIST_FROM_PREV_SESSION">OBJECTS</string>
+    <string name="User_Rating_Not_Set">Not set</string>
 </resources>

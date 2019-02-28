@@ -1,10 +1,10 @@
 package com.ITSMAP.movielist.DTO;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.PrintStream;
-import java.io.Serializable;
 
 public class Movie implements Parcelable {
 

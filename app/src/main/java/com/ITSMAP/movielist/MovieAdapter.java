@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +28,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private Context context;
     public static final Integer MOVIE_FROM_ADAPTER_CODE = 100;
     private int lastClickedIndex;
-
+    private drawableGenerator drawableGenerator;
 
     public MovieAdapter(List<com.ITSMAP.movielist.DTO.Movie> movies, Context context){
         movieList = movies;
         this.context = context;
+        drawableGenerator = new drawableGenerator(context);
     }
     @NonNull
     @Override
@@ -54,7 +57,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         viewHolder.movieRating.setText(currentMovie.getiMDBRating());
         viewHolder.movieSeenStatus.setText(currentMovie.isWatchStatus() ? "Watched" : "Unseen");
         viewHolder.movieUserRating.setText(currentMovie.hasUserRating() ? currentMovie.getUserRating() : "NA");
+        viewHolder.poster.setImageDrawable(drawableGenerator.getDrawableByGenre(currentMovie));
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -66,7 +72,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         public TextView movieRating;
         public TextView movieUserRating;
         public TextView movieSeenStatus;
-
+        public ImageView poster;
         public ViewHolder(
         View itemView) {
             super(itemView);
@@ -75,11 +81,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             movieRating = itemView.findViewById(R.id.list_item_rating);
             movieUserRating = itemView.findViewById(R.id.list_item_userRating);
             movieSeenStatus = itemView.findViewById(R.id.list_item_viewStatus);
+            poster = itemView.findViewById(R.id.imageView);
 
             itemView.setOnClickListener(v -> {
-                // TODO: 27-02-2019 Create intent to new window
-                //Toast.makeText(itemView.getContext() ,String.valueOf(movieList.get(getAdapterPosition()).getName()), Toast.LENGTH_SHORT).show();
-
                 Movie clickedMovie = movieList.get(getAdapterPosition());
                 Intent detailsIntent = new Intent(context, Details.class);
 

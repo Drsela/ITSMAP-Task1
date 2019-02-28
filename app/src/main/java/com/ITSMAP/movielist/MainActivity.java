@@ -1,25 +1,31 @@
 package com.ITSMAP.movielist;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
-import android.view.View;
+
 import android.widget.Button;
 
 import com.ITSMAP.movielist.DTO.Movie;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
-
+    private List<Movie> moviesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +34,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         Button exitBtn = findViewById(R.id.main_btn_exit);
 
-
-        List<Movie> data = getData();
-        List<Movie> moviesList = getMovieObjects(data);
-        movieAdapter = new MovieAdapter(moviesList,this);
+        moviesList = getMovieListFromPrevSession(getString(R.string.MOVIE_LIST_FROM_PREV_SESSION));
+        if (moviesList!= null){
+            movieAdapter = new MovieAdapter(moviesList,this);
+        }
+        else {
+            List<Movie> data = getData();
+            moviesList = getMovieObjects(data);
+            movieAdapter = new MovieAdapter(moviesList,this);
+        }
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -49,11 +60,13 @@ public class MainActivity extends AppCompatActivity {
     
     private ArrayList<Movie> getMovieObjects(List<Movie> data) {
         ArrayList<Movie> movieList = new ArrayList<>();
-        data.remove(0);
 
         for (int i = 0; i < data.size(); i++) {
             Movie currentMovie = data.get(i);
-            movieList.add(currentMovie);
+            if(!currentMovie.getPlot().equals("Plot")){
+                movieList.add(currentMovie);
+            }
+
         }
 
         for (Movie movie : movieList) {
@@ -66,5 +79,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         movieAdapter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onPause() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(moviesList);
+        editor.putString(getString(R.string.MOVIE_LIST_FROM_PREV_SESSION),json);
+        editor.apply();
+        super.onPause();
+    }
+
+    private List<Movie> getMovieListFromPrevSession(String key) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Gson gson = new Gson();
+        String json = prefs.getString(key,null);
+        Type type = new TypeToken<List<Movie>>() {}.getType();
+        return gson.fromJson(json, type);
     }
 }

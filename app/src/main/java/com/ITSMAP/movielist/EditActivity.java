@@ -19,6 +19,7 @@ public class EditActivity extends AppCompatActivity {
     private SeekBar userRatingSeekbar;
     private TextView userComment;
     private Button saveBtn;
+    private Button cancelBtn;
     private float seekbarValue;
     private CheckBox watchedCheckbox;
     public static String EDITACTIVITY_MOVIE_RESPONSE = "UPDATED_MOVIE";
@@ -39,7 +40,9 @@ public class EditActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK,returnIntent);
             finish();
         });
-
+        cancelBtn.setOnClickListener(v -> {
+            finish();
+        });
         userRatingSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -67,6 +70,7 @@ public class EditActivity extends AppCompatActivity {
         userComment = findViewById(R.id.editActivity_userComment_textView);
         watchedCheckbox = findViewById(R.id.editActivity_watched_checkbox);
         saveBtn = findViewById(R.id.editActivity_save_btn);
+        cancelBtn = findViewById(R.id.editActivity_cancel_btn);
     }
     private void updateUI(Movie movie) {
         moviePlot.setText(movie.getName());
