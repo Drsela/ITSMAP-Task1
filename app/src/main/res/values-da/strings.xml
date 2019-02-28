@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="details_userComment_text"><u>Kommentar</u></string>
+    <string name="detail_userComment_text">Skriv en kommentar vedrørende filmen</string>
+    <string name="details_genres_text">Genrer:</string>
+    <string name="edit_movie_watched_status">Set</string>
+    <string name="save_text">Gem</string>
+    <string name="edit_activity_user_rating">Din score:\u0020</string>
+    <string name="editActivity_movieTitle_Placeholder">Film Titel</string>
+    <string name="editActivity_userRating_Placeholder">Din score: 5.5</string>
+    <string name="editActivity_userComment_HelpText">Skriv en kommentar vedrørende filmen</string>
+    <string name="iMDB_Rating_Placeholder">iMDB: 5.5</string>
+    <string name="rating_placeholder">5.5</string>
+    <string name="details_iMDB">iMDB:\u0020</string>
+    <string name="User_Rating_Not_Set">Ikke angivet</string>
+    <string name="button_exit">Forlad</string>
+    <string name="edit_activity_clear_btn">Ryd</string>
+    <string name="no_prev_user_rating">Bedøm filmen</string>
+    <string name="edit_text_checkboxText">Har du set filmen?</string>
+    <string name="movie_not_seen">Ikke set</string>
+    <string name="Plot"><u>Plot</u></string>
+</resources>

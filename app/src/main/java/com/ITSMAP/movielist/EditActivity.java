@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
@@ -20,6 +21,7 @@ public class EditActivity extends AppCompatActivity {
     private TextView userComment;
     private Button saveBtn;
     private Button cancelBtn;
+    private Button clearBtn;
     private float seekbarValue;
     private CheckBox watchedCheckbox;
     public static String EDITACTIVITY_MOVIE_RESPONSE = "UPDATED_MOVIE";
@@ -40,9 +42,20 @@ public class EditActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK,returnIntent);
             finish();
         });
-        cancelBtn.setOnClickListener(v -> {
+        clearBtn.setOnClickListener(v -> {
+            clickedMovie.setUserRating(null);
+            clickedMovie.setUserComment(null);
+
+            clickedMovie.setWatchStatus(false);
+            clickedMovie.setUserComment(false);
+            clickedMovie.setUserRating(false);
+
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("TEST", clickedMovie);
+            setResult(Activity.RESULT_OK,returnIntent);
             finish();
         });
+        cancelBtn.setOnClickListener((View v) -> finish());
         userRatingSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -71,19 +84,23 @@ public class EditActivity extends AppCompatActivity {
         watchedCheckbox = findViewById(R.id.editActivity_watched_checkbox);
         saveBtn = findViewById(R.id.editActivity_save_btn);
         cancelBtn = findViewById(R.id.editActivity_cancel_btn);
+        clearBtn = findViewById(R.id.edit_activity_clear_btn);
     }
     private void updateUI(Movie movie) {
         moviePlot.setText(movie.getName());
-        userRating.setText(getString(R.string.edit_activity_user_rating));
+
         if (movie.hasUserRating())
         {
+            userRating.setText(getString(R.string.edit_activity_user_rating));
             userRating.append(movie.getUserRating());
             float userRating = Float.valueOf(movie.getUserRating());
             userRatingSeekbar.setProgress(Math.round(userRating*10));
             seekbarValue = ((float)userRatingSeekbar.getProgress() / 10);
         }
-        else
-            userRating.append("N/A");
+        else{
+            userRating.setText(getString(R.string.no_prev_user_rating));
+        }
+
         if (movie.hasUserComment())
         {
             userComment.setText(movie.getUserComment());
