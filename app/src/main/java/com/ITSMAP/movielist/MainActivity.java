@@ -1,5 +1,6 @@
 package com.ITSMAP.movielist;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         List<Movie> data = getData();
         List<Movie> moviesList = getMovieObjects(data);
-        MovieAdapter adapter = new MovieAdapter(moviesList,this);
-        recyclerView.setAdapter(adapter);
+        movieAdapter = new MovieAdapter(moviesList,this);
+        recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         exitBtn.setOnClickListener(v -> {
@@ -54,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
             Movie currentMovie = data.get(i);
             movieList.add(currentMovie);
         }
+
+        for (Movie movie : movieList) {
+            movie.setUserRating(false);
+            movie.setUserComment(false);
+        }
         return movieList;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        movieAdapter.onActivityResult(requestCode, resultCode, data);
     }
 }

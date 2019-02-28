@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">MovieList</string>
     <string name="button_exit">Exit</string>
+    <string name="details_userComment_text"><u>User comment</u></string>
+    <string name="detail_userComment_text">Write a comment about this movie</string>
+    <string name="details_genres_text">Genres:</string>
+    <string name="edit_movie_watched_status">Watched</string>
+    <string name="save_text">Save</string>
+    <string name="edit_activity_user_rating">User rating: </string>
+    <string name="editActivity_movieTitle_Placeholder">Movie Title</string>
+    <string name="editActivity_userRating_Placeholder">User Rating: 5.5</string>
+    <string name="editActivity_userComment_HelpText">Insert comment about movie</string>
+    <string name="iMDB_Rating_Placeholder">iMDB: 5.5</string>
+    <string name="rating_placeholder">5.5</string>
 </resources>
