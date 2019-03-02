@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Details">
 
+    <TextView
+        android:id="@+id/details_watchStatus_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/edit_movie_watched_status"
+        app:layout_constraintEnd_toEndOf="@+id/details_plot_textView"
+        app:layout_constraintTop_toBottomOf="@+id/details_plot_textView" />
+
     <ImageView
         android:id="@+id/details_image"
         android:layout_width="256dp"
