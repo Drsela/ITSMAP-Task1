@@ -20,4 +20,5 @@
     <string name="edit_text_checkboxText">Have you seen this movie?</string>
     <string name="movie_not_seen">Unwatched</string>
     <string name="Plot"><u>Plot</u></string>
+    <string name="watchStatus">Status:\u0020 </string>
 </resources>

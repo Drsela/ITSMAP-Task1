@@ -49,7 +49,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         viewHolder.movieName.setText(currentMovie.getName());
         viewHolder.movieRating.setText(currentMovie.getiMDBRating());
-        viewHolder.movieSeenStatus.setText(currentMovie.hasBeenWatched() ? context.getResources().getString(R.string.edit_movie_watched_status) : context.getResources().getString(R.string.movie_not_seen));
+        viewHolder.movieSeenStatus.setText(R.string.watchStatus);
+        viewHolder.movieSeenStatus.append(currentMovie.hasBeenWatched() ? context.getResources().getString(R.string.edit_movie_watched_status) : context.getResources().getString(R.string.movie_not_seen));
         viewHolder.movieUserRating.setText(currentMovie.hasUserRating() ? currentMovie.getUserRating() : null);
         viewHolder.poster.setImageDrawable(drawableGenerator.getDrawableByGenre(currentMovie));
     }

@@ -19,4 +19,5 @@
     <string name="edit_text_checkboxText">Har du set filmen?</string>
     <string name="movie_not_seen">Ikke set</string>
     <string name="Plot"><u>Plot</u></string>
+    <string name="watchStatus">Status:\u0020 </string>
 </resources>
