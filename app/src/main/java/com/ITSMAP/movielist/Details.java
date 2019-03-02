@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.ITSMAP.movielist.DTO.Movie;
 
@@ -32,7 +31,7 @@ public class Details extends AppCompatActivity {
         Intent intent = getIntent();
         Movie clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable("MOVIE");
         initializeUI();
-        updateUI(clickedMovie);
+        updateUI(Objects.requireNonNull(clickedMovie));
 
         OK_Btn.setOnClickListener(v -> finish());
     }
@@ -54,10 +53,9 @@ public class Details extends AppCompatActivity {
 
     private void updateUI(Movie movie) {
         this.setTitle(movie.getName());
-        //movieTitle.setText(movie.getName());
         movieTitle.setText(null);
         moviePlot.setText(movie.getPlot());
-        watchStatus.setText(movie.isWatchStatus() ? getString(R.string.edit_movie_watched_status) : getString(R.string.movie_not_seen));
+        watchStatus.setText(movie.hasBeenWatched() ? getString(R.string.edit_movie_watched_status) : getString(R.string.movie_not_seen));
         movieiMDB.setText(getString(R.string.details_iMDB));
         movieiMDB.append(movie.getiMDBRating());
         movieUserComment.setText(movie.getUserComment());

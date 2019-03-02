@@ -1,6 +1,5 @@
 package com.ITSMAP.movielist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -20,17 +19,16 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.PreferenceChangeEvent;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
     private List<Movie> moviesList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         Button exitBtn = findViewById(R.id.main_btn_exit);
 
@@ -39,20 +37,18 @@ public class MainActivity extends AppCompatActivity {
             movieAdapter = new MovieAdapter(moviesList,this);
         }
         else {
-            List<Movie> data = getData();
+            List data = getDataFromCsvFile();
             moviesList = getMovieObjects(data);
             movieAdapter = new MovieAdapter(moviesList,this);
         }
+
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        exitBtn.setOnClickListener(v -> {
-            finish();
-        });
-
+        exitBtn.setOnClickListener(v -> finish());
     }
 
-    private List getData() {
+    private List getDataFromCsvFile() {
         InputStream stream = getResources().openRawResource(R.raw.movielist);
         CSVReader reader = new CSVReader(stream);
         return reader.getMovies();
@@ -66,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             if(!currentMovie.getPlot().equals("Plot")){
                 movieList.add(currentMovie);
             }
-
         }
 
         for (Movie movie : movieList) {

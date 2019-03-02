@@ -1,8 +1,5 @@
 package com.ITSMAP.movielist.DTO;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -22,9 +19,10 @@ public class Movie implements Parcelable {
         return userComment;
     }
 
-    public void setUserComment(boolean userCommenBool){
-        this.userComment = userCommenBool;
+    public void setUserComment(boolean userCommentBool) {
+        this.userComment = userCommentBool;
     }
+
     public boolean hasUserRating() {
         return userRating;
     }
@@ -42,8 +40,7 @@ public class Movie implements Parcelable {
     }
 
 
-
-    public boolean isWatchStatus() {
+    public boolean hasBeenWatched() {
         return watched;
     }
 
@@ -128,16 +125,16 @@ public class Movie implements Parcelable {
         boolean watchStatus = false;
         boolean UserRating = false;
         boolean UserComment = false;
-        if(in.readInt() == 1){
+        if (in.readInt() == 1) {
             watchStatus = true;
         }
-        if(in.readInt() == 1) {
+        if (in.readInt() == 1) {
             UserRating = true;
         }
-        if (userComment!= null) {
+        if (userComment != null) {
             UserComment = true;
         }
-        Movie movie = new Movie(name,plot,genres,iMDBRating);
+        Movie movie = new Movie(name, plot, genres, iMDBRating);
         movie.setUserComment(UserComment);
         movie.setUserComment(userComment);
         movie.setUserRating(UserRating);
@@ -145,6 +142,7 @@ public class Movie implements Parcelable {
         movie.setWatchStatus(watchStatus);
         return movie;
     }
+
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         public Movie createFromParcel(Parcel in) {
             return readFromParcel(in);

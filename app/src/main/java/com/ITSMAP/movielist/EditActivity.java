@@ -24,7 +24,7 @@ public class EditActivity extends AppCompatActivity {
     private Button clearBtn;
     private float seekbarValue;
     private CheckBox watchedCheckbox;
-    public static String EDITACTIVITY_MOVIE_RESPONSE = "UPDATED_MOVIE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class EditActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Movie clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable("MOVIE");
         initializeUI();
-        updateUI(clickedMovie);
+        updateUI(Objects.requireNonNull(clickedMovie));
 
         saveBtn.setOnClickListener(v -> {
             Movie updatedMovie = updateMovieSettings(clickedMovie);
@@ -105,7 +105,7 @@ public class EditActivity extends AppCompatActivity {
         {
             userComment.setText(movie.getUserComment());
         }
-        if(movie.isWatchStatus()){
+        if(movie.hasBeenWatched()){
             watchedCheckbox.setChecked(true);
         }
     }
