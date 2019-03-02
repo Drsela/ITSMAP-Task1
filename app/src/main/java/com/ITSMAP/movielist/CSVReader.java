@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CSVReader {
 
-    InputStream inputStream;
+    private InputStream inputStream;
 
     public CSVReader(InputStream inputStream) {
         this.inputStream = inputStream;

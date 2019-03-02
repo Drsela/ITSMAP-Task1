@@ -108,12 +108,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/colorAccent"
         android:text="@android:string/ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_UserComment_textView"
-        app:layout_constraintVertical_bias="0.924" />
+        app:layout_constraintVertical_bias="0.924"
+        android:elevation="2dp"
+        android:background="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/textView"
