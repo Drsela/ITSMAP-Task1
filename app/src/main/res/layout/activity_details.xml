@@ -130,18 +130,18 @@
 
     <Button
         android:id="@+id/details_ok_btn"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="42dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="@android:string/ok"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_Genres_textView"
-        android:elevation="2dp"
-        android:background="@color/colorAccent"/>
+        app:layout_constraintTop_toBottomOf="@+id/details_Genres_textView" />
 
 </android.support.constraint.ConstraintLayout>
