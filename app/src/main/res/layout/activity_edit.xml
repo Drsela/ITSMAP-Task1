@@ -42,15 +42,15 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:max="100"
-        android:progress="5"
+        android:progress="50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_textView" />
 
 
     <EditText
-        style="@android:style/Widget.Material.EditText"
         android:id="@+id/editActivity_userComment_textView"
+        style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
         android:layout_width="0dp"
         android:layout_height="122dp"
         android:layout_marginStart="8dp"
