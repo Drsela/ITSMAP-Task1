@@ -21,7 +21,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/list_item_title"
@@ -31,7 +32,8 @@
         android:text="@string/editActivity_movieTitle_Placeholder"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="60dp" />
 
     <TextView
         android:id="@+id/list_item_rating"
@@ -41,7 +43,8 @@
         android:text="@string/rating_placeholder"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/list_item_userRating"
@@ -51,7 +54,8 @@
         android:text="@string/rating_placeholder"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_viewStatus"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/list_item_viewStatus"

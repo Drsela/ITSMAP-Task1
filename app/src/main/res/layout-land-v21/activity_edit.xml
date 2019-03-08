@@ -14,8 +14,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/editActivity_movieTitle_Placeholder"
-        android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/editActivity_userRating_Placeholder"
         android:textSize="24sp"
@@ -35,92 +34,103 @@
 
     <SeekBar
         android:id="@+id/editActivity_userRating_seekBar"
-        style="@style/Widget.AppCompat.SeekBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@android:style/Widget.Material.SeekBar"
+        android:layout_width="333dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:max="100"
         android:progress="50"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.023"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_textView" />
-
 
     <EditText
         android:id="@+id/editActivity_userComment_textView"
         style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
-        android:layout_width="0dp"
-        android:layout_height="122dp"
+        android:layout_width="310dp"
+        android:layout_height="128dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:ellipsize="start"
         android:ems="10"
+        android:gravity="top"
         android:hint="@string/editActivity_userComment_HelpText"
         android:inputType="textMultiLine"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editActivity_watched_checkbox" />
-
-
-    <CheckBox
-        android:id="@+id/editActivity_watched_checkbox"
-        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="37dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        android:checked="false"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/edit_movie_watched_status"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_seekBar" />
-
-    <Button
-        android:id="@+id/editActivity_cancel_btn"
-        style="@style/Widget.MaterialComponents.Button"
-        app:backgroundTint="@color/colorPrimaryDark"
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:layout_marginEnd="8dp"
-        android:text="@android:string/cancel"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_activity_clear_btn"
-        app:layout_constraintEnd_toStartOf="@+id/edit_activity_clear_btn"
-        app:layout_constraintTop_toTopOf="@+id/edit_activity_clear_btn"
-        android:layout_marginRight="8dp" />
-
-    <Button
-        android:id="@+id/edit_activity_clear_btn"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:textSize="14sp"
-        app:backgroundTint="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/edit_activity_clear_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editActivity_userComment_textView" />
+        app:layout_constraintStart_toEndOf="@+id/editActivity_userRating_seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_textView" />
 
     <Button
         android:id="@+id/editActivity_save_btn"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="42dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/save_text"
         android:textSize="14sp"
+        android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/edit_activity_clear_btn"
         app:layout_constraintStart_toEndOf="@+id/edit_activity_clear_btn"
         app:layout_constraintTop_toTopOf="@+id/edit_activity_clear_btn"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintVertical_bias="0.0" />
 
+    <CheckBox
+        android:id="@+id/editActivity_watched_checkbox"
+        style="@android:style/Widget.Material.CompoundButton.CheckBox"
+        android:layout_width="152dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:buttonTint="@color/colorAccent"
+        android:checked="false"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/edit_movie_watched_status"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_seekBar" />
+
+    <Button
+        android:id="@+id/editActivity_cancel_btn"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@android:string/cancel"
+        android:textSize="14sp"
+        android:elevation="2dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/edit_activity_clear_btn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/edit_activity_clear_btn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/edit_activity_clear_btn"
+        android:textSize="14sp"
+        android:elevation="2dp"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/editActivity_cancel_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editActivity_watched_checkbox"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

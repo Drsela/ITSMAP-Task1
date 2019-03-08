@@ -34,7 +34,7 @@
 
     <SeekBar
         android:id="@+id/editActivity_userRating_seekBar"
-        style="@android:style/Widget.Material.SeekBar"
+        style="@style/Base.Widget.AppCompat.SeekBar"
         android:layout_width="333dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -61,7 +61,6 @@
         android:inputType="textMultiLine"
         android:selectAllOnFocus="false"
         android:singleLine="false"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editActivity_userRating_seekBar"
         app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_textView" />
@@ -78,17 +77,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/edit_activity_clear_btn"
         app:layout_constraintStart_toEndOf="@+id/edit_activity_clear_btn"
         app:layout_constraintTop_toTopOf="@+id/edit_activity_clear_btn"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="16dp" />
 
     <CheckBox
         android:id="@+id/editActivity_watched_checkbox"
-        style="@android:style/Widget.Material.CompoundButton.CheckBox"
+        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
         android:layout_width="152dp"
         android:layout_height="44dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
-        android:buttonTint="@color/colorAccent"
         android:checked="false"
         android:clickable="true"
         android:focusable="true"
@@ -97,7 +96,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_seekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/editActivity_userRating_seekBar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp" />
 
     <Button
         android:id="@+id/editActivity_cancel_btn"
@@ -114,7 +115,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/edit_activity_clear_btn"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp" />
 
     <Button
         android:id="@+id/edit_activity_clear_btn"
@@ -122,10 +125,8 @@
         android:layout_width="wrap_content"
         android:layout_height="42dp"
         android:layout_marginTop="8dp"
-        android:background="@color/white"
         android:text="@string/edit_activity_clear_btn"
         android:textSize="14sp"
-
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/editActivity_cancel_btn"
         app:layout_constraintEnd_toEndOf="parent"

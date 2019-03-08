@@ -24,16 +24,35 @@ public class EditActivity extends AppCompatActivity {
     private Button clearBtn;
     private float seekbarValue;
     private CheckBox watchedCheckbox;
-
+    private Movie clickedMovie;
+    private String seekbarValue_KEY = "seekbarValue";
+    private String watchStatus_KEY = "watchStatus";
+    private String comment_KEY = "comment";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-
-        Intent intent = getIntent();
-        Movie clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable("MOVIE");
         initializeUI();
-        updateUI(Objects.requireNonNull(clickedMovie));
+        Intent intent = getIntent();
+        clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable("MOVIE");
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            int oldSeekbarValue = savedInstanceState.getInt(seekbarValue_KEY);
+            boolean checkbox = savedInstanceState.getBoolean(watchStatus_KEY);
+            String oldComment = savedInstanceState.getString(comment_KEY);
+
+            userRatingSeekbar.setProgress(oldSeekbarValue);
+            watchedCheckbox.setChecked(checkbox);
+            userComment.setText(oldComment);
+
+            userRating.setText(getString(R.string.edit_activity_user_rating));
+            seekbarValue =  ((float)oldSeekbarValue / 10);
+            userRating.append(" " + String.valueOf(seekbarValue));
+        }
+        else
+        {
+            updateUI(Objects.requireNonNull(clickedMovie));
+        }
 
         saveBtn.setOnClickListener(v -> {
             Movie updatedMovie = updateMovieSettings(clickedMovie);
@@ -119,5 +138,13 @@ public class EditActivity extends AppCompatActivity {
         else
             movie.setWatchStatus(false);
         return movie;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(seekbarValue_KEY, userRatingSeekbar.getProgress());
+        savedInstanceState.putBoolean(watchStatus_KEY, watchedCheckbox.isChecked());
+        savedInstanceState.putString(comment_KEY,userComment.getText().toString());
     }
 }
