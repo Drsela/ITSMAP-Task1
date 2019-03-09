@@ -15,7 +15,7 @@ import com.ITSMAP.movielist.DTO.Movie;
 import java.util.Objects;
 
 public class EditActivity extends AppCompatActivity {
-    private TextView moviePlot;
+    private TextView movieTitle;
     private TextView userRating;
     private SeekBar userRatingSeekbar;
     private TextView userComment;
@@ -25,29 +25,38 @@ public class EditActivity extends AppCompatActivity {
     private float seekbarValue;
     private CheckBox watchedCheckbox;
     private Movie clickedMovie;
-    private String seekbarValue_KEY = "seekbarValue";
-    private String watchStatus_KEY = "watchStatus";
-    private String comment_KEY = "comment";
+    private String SEEKBAR_VALUE_KEY = "seekbarValue";
+    private String WATCH_STATUS_KEY = "watchStatus";
+    private String COMMENT_KEY = "comment";
+    private String MOVIE_TITLE_KEY = "movieTitle";
+    private String USER_RATING_KEY = "userRating";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         initializeUI();
         Intent intent = getIntent();
-        clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable("MOVIE");
+        clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable(MovieAdapter.MOVIE_FROM_ADAPTER);
         if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            int oldSeekbarValue = savedInstanceState.getInt(seekbarValue_KEY);
-            boolean checkbox = savedInstanceState.getBoolean(watchStatus_KEY);
-            String oldComment = savedInstanceState.getString(comment_KEY);
-
+            int oldSeekbarValue = savedInstanceState.getInt(SEEKBAR_VALUE_KEY);
+            boolean checkbox = savedInstanceState.getBoolean(WATCH_STATUS_KEY);
+            boolean hasUserRating = savedInstanceState.getBoolean(USER_RATING_KEY);
+            String oldComment = savedInstanceState.getString(COMMENT_KEY);
+            String title = savedInstanceState.getString(MOVIE_TITLE_KEY);
+            clickedMovie.setUserRating(hasUserRating);
             userRatingSeekbar.setProgress(oldSeekbarValue);
             watchedCheckbox.setChecked(checkbox);
             userComment.setText(oldComment);
-
-            userRating.setText(getString(R.string.edit_activity_user_rating));
-            seekbarValue =  ((float)oldSeekbarValue / 10);
-            userRating.append(" " + String.valueOf(seekbarValue));
+            movieTitle.setText(title);
+            if (!hasUserRating) {
+               userRating.setText(R.string.no_prev_user_rating);
+            }
+            else {
+                userRating.setText(getString(R.string.edit_activity_user_rating));
+                seekbarValue =  ((float)oldSeekbarValue / 10);
+                userRating.append(" " + String.valueOf(seekbarValue));
+            }
         }
         else
         {
@@ -64,7 +73,6 @@ public class EditActivity extends AppCompatActivity {
         clearBtn.setOnClickListener(v -> {
             clickedMovie.setUserRating(null);
             clickedMovie.setUserComment(null);
-
             clickedMovie.setWatchStatus(false);
             clickedMovie.setUserComment(false);
             clickedMovie.setUserRating(false);
@@ -75,6 +83,7 @@ public class EditActivity extends AppCompatActivity {
             finish();
         });
         cancelBtn.setOnClickListener((View v) -> finish());
+
         userRatingSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -90,13 +99,13 @@ public class EditActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                clickedMovie.setUserRating(true);
             }
         });
     }
 
     private void initializeUI(){
-        moviePlot = findViewById(R.id.editActivity_movieTitle_textView);
+        movieTitle = findViewById(R.id.editActivity_movieTitle_textView);
         userRating = findViewById(R.id.editActivity_userRating_textView);
         userRatingSeekbar = findViewById(R.id.editActivity_userRating_seekBar);
         userComment = findViewById(R.id.editActivity_userComment_textView);
@@ -106,7 +115,7 @@ public class EditActivity extends AppCompatActivity {
         clearBtn = findViewById(R.id.edit_activity_clear_btn);
     }
     private void updateUI(Movie movie) {
-        moviePlot.setText(movie.getName());
+        movieTitle.setText(movie.getName());
 
         if (movie.hasUserRating())
         {
@@ -143,8 +152,10 @@ public class EditActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(seekbarValue_KEY, userRatingSeekbar.getProgress());
-        savedInstanceState.putBoolean(watchStatus_KEY, watchedCheckbox.isChecked());
-        savedInstanceState.putString(comment_KEY,userComment.getText().toString());
+        savedInstanceState.putInt(SEEKBAR_VALUE_KEY, userRatingSeekbar.getProgress());
+        savedInstanceState.putBoolean(WATCH_STATUS_KEY, watchedCheckbox.isChecked());
+        savedInstanceState.putBoolean(USER_RATING_KEY, clickedMovie.hasUserRating());
+        savedInstanceState.putString(COMMENT_KEY, userComment.getText().toString());
+        savedInstanceState.putString(MOVIE_TITLE_KEY, movieTitle.getText().toString());
     }
 }

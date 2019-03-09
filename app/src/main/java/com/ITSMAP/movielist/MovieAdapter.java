@@ -24,6 +24,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private static final Integer MOVIE_FROM_ADAPTER_CODE = 100;
     private int lastClickedIndex;
     private drawableGenerator drawableGenerator;
+    public static String MOVIE_FROM_ADAPTER = "Adapter movie";
 
     public MovieAdapter(List<com.ITSMAP.movielist.DTO.Movie> movies, Context context){
         movieList = movies;
@@ -81,7 +82,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 Movie clickedMovie = movieList.get(getAdapterPosition());
                 Intent detailsIntent = new Intent(context, Details.class);
 
-                detailsIntent.putExtra("MOVIE",clickedMovie);
+                detailsIntent.putExtra(MOVIE_FROM_ADAPTER,clickedMovie);
                 context.startActivity(detailsIntent);
             });
 
@@ -89,7 +90,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 lastClickedIndex = getAdapterPosition();
                 Movie clickedMovie = movieList.get(getAdapterPosition());
                 Intent detailsIntent = new Intent(context, EditActivity.class);
-                detailsIntent.putExtra("MOVIE",clickedMovie);
+                detailsIntent.putExtra(MOVIE_FROM_ADAPTER,clickedMovie);
                 ((Activity) context).startActivityForResult(detailsIntent,MOVIE_FROM_ADAPTER_CODE);
                 return true;
             });

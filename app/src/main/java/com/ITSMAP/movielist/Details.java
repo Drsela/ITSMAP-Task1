@@ -23,15 +23,23 @@ public class Details extends AppCompatActivity {
     private TextView movieGenres;
     private Button OK_Btn;
     private drawableGenerator drawableGenerator;
+    private Movie clickedMovie;
+    private String MOVIE_OBJECT_KEY = "Movie";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         drawableGenerator = new drawableGenerator(this);
-        Intent intent = getIntent();
-        Movie clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable("MOVIE");
         initializeUI();
-        updateUI(Objects.requireNonNull(clickedMovie));
+        if (savedInstanceState != null) {
+            clickedMovie = savedInstanceState.getParcelable(MOVIE_OBJECT_KEY);
+            updateUI(Objects.requireNonNull(clickedMovie));
+        }
+        else {
+            Intent intent = getIntent();
+            clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable(MovieAdapter.MOVIE_FROM_ADAPTER);
+            updateUI(Objects.requireNonNull(clickedMovie));
+        }
 
         OK_Btn.setOnClickListener(v -> finish());
     }
@@ -50,7 +58,6 @@ public class Details extends AppCompatActivity {
         movieiMDB.setPaintFlags(movieiMDB.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
-
     private void updateUI(Movie movie) {
         this.setTitle(movie.getName());
         movieTitle.setText(null);
@@ -68,5 +75,11 @@ public class Details extends AppCompatActivity {
         }
         movieGenres.setText(movie.getGenres());
         moviePoster.setImageDrawable(drawableGenerator.getDrawableByGenre(movie));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable(MOVIE_OBJECT_KEY, clickedMovie);
     }
 }
