@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EditActivity"></activity>
-        <activity android:name=".Details" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".GUI.EditActivity"></activity>
+        <activity android:name=".GUI.DetailsActivity" />
+        <activity android:name=".GUI.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

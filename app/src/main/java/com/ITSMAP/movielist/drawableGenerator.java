@@ -7,22 +7,23 @@ import com.ITSMAP.movielist.DTO.Movie;
 
 public class drawableGenerator {
     private Context context;
+
     public drawableGenerator(Context context) {
         this.context = context;
     }
 
     public Drawable getDrawableByGenre(Movie currentMovie) {
         String genres = currentMovie.getGenres();
-        if(genres.contains("Sci-fi")) {
+        if (genres.contains("Sci-fi")) {
             return context.getResources().getDrawable(R.drawable.category_sci_fi);
         }
-        if(genres.contains("Action")){
+        if (genres.contains("Action")) {
             return context.getResources().getDrawable(R.drawable.category_action);
         }
-        if(genres.contains("Music")) {
+        if (genres.contains("Music")) {
             return context.getResources().getDrawable(R.drawable.category_music);
         }
-        if(genres.contains("Drama")) {
+        if (genres.contains("Drama")) {
             return context.getResources().getDrawable(R.drawable.category_drama);
         }
 

@@ -24,13 +24,11 @@ public class CSVReader {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(";");
-                resultList.add(new Movie(row[0],row[1],row[2],row[3]));
+                resultList.add(new Movie(row[0], row[1], row[2], row[3]));
             }
-        }
-        catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeException("Error reading CSV File");
-        }
-        finally {
+        } finally {
             try {
                 inputStream.close();
             } catch (IOException e) {

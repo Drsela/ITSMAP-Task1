@@ -96,7 +96,6 @@ public class Movie implements Parcelable {
         UserRating = userRating;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -105,47 +104,32 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.Name);
+        dest.writeString(this.Plot);
         dest.writeString(this.Genres);
         dest.writeString(this.iMDBRating);
-        dest.writeString(this.Plot);
         dest.writeString(this.UserRating);
         dest.writeString(this.UserComment);
-        dest.writeInt(watched ? 1 : 0);
-        dest.writeInt(userRating ? 1 : 0);
-        dest.writeInt(userComment ? 1 : 0);
+        dest.writeByte(this.watched ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.userRating ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.userComment ? (byte) 1 : (byte) 0);
     }
 
-    private static Movie readFromParcel(Parcel in) {
-        String name = in.readString();
-        String genres = in.readString();
-        String iMDBRating = in.readString();
-        String plot = in.readString();
-        String userRating = in.readString();
-        String userComment = in.readString();
-        boolean watchStatus = false;
-        boolean UserRating = false;
-        boolean UserComment = false;
-        if (in.readInt() == 1) {
-            watchStatus = true;
-        }
-        if (in.readInt() == 1) {
-            UserRating = true;
-        }
-        if (userComment != null) {
-            UserComment = true;
-        }
-        Movie movie = new Movie(name, plot, genres, iMDBRating);
-        movie.setUserComment(UserComment);
-        movie.setUserComment(userComment);
-        movie.setUserRating(UserRating);
-        movie.setUserRating(userRating);
-        movie.setWatchStatus(watchStatus);
-        return movie;
+    protected Movie(Parcel in) {
+        this.Name = in.readString();
+        this.Plot = in.readString();
+        this.Genres = in.readString();
+        this.iMDBRating = in.readString();
+        this.UserRating = in.readString();
+        this.UserComment = in.readString();
+        this.watched = in.readByte() != 0;
+        this.userRating = in.readByte() != 0;
+        this.userComment = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
-        public Movie createFromParcel(Parcel in) {
-            return readFromParcel(in);
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
         }
 
         @Override

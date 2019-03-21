@@ -1,32 +1,36 @@
-package com.ITSMAP.movielist;
+package com.ITSMAP.movielist.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ITSMAP.movielist.DTO.Movie;
+import com.ITSMAP.movielist.GUI.DetailsActivity;
+import com.ITSMAP.movielist.GUI.EditActivity;
+import com.ITSMAP.movielist.R;
+import com.ITSMAP.movielist.drawableGenerator;
+
 import java.util.List;
 import java.util.Objects;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
-    private List<com.ITSMAP.movielist.DTO.Movie>  movieList;
+    public static final String ADAPTER_POSITION = "ADAPTER POSITION";
+    private List<com.ITSMAP.movielist.DTO.Movie> movieList;
     private Context context;
     private static final Integer MOVIE_FROM_ADAPTER_CODE = 100;
-    private int lastClickedIndex;
-    private drawableGenerator drawableGenerator;
+    private com.ITSMAP.movielist.drawableGenerator drawableGenerator;
     public static String MOVIE_FROM_ADAPTER = "Adapter movie";
 
-    public MovieAdapter(List<com.ITSMAP.movielist.DTO.Movie> movies, Context context){
+    public MovieAdapter(List<com.ITSMAP.movielist.DTO.Movie> movies, Context context) {
         movieList = movies;
         this.context = context;
         drawableGenerator = new drawableGenerator(context);
@@ -69,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         ImageView poster;
 
         public ViewHolder(
-        View itemView) {
+                View itemView) {
             super(itemView);
 
             movieName = itemView.findViewById(R.id.list_item_title);
@@ -80,28 +84,29 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
             itemView.setOnClickListener(v -> {
                 Movie clickedMovie = movieList.get(getAdapterPosition());
-                Intent detailsIntent = new Intent(context, Details.class);
+                Intent detailsIntent = new Intent(context, DetailsActivity.class);
 
-                detailsIntent.putExtra(MOVIE_FROM_ADAPTER,clickedMovie);
+                detailsIntent.putExtra(MOVIE_FROM_ADAPTER, clickedMovie);
                 context.startActivity(detailsIntent);
             });
 
             itemView.setOnLongClickListener(v -> {
-                lastClickedIndex = getAdapterPosition();
                 Movie clickedMovie = movieList.get(getAdapterPosition());
                 Intent detailsIntent = new Intent(context, EditActivity.class);
-                detailsIntent.putExtra(MOVIE_FROM_ADAPTER,clickedMovie);
-                ((Activity) context).startActivityForResult(detailsIntent,MOVIE_FROM_ADAPTER_CODE);
+                detailsIntent.putExtra(MOVIE_FROM_ADAPTER, clickedMovie);
+                detailsIntent.putExtra(ADAPTER_POSITION, getAdapterPosition());
+                ((Activity) context).startActivityForResult(detailsIntent, MOVIE_FROM_ADAPTER_CODE);
                 return true;
             });
         }
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("MyAdapter", "onActivityResult");
         if (requestCode == MOVIE_FROM_ADAPTER_CODE) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 Movie updatedMovie = Objects.requireNonNull(data.getExtras()).getParcelable("TEST");
-                movieList.set(lastClickedIndex, updatedMovie);
+                movieList.set(data.getIntExtra(ADAPTER_POSITION, 0), updatedMovie);
                 notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {

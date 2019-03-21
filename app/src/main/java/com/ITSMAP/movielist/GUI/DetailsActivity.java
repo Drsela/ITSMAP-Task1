@@ -1,18 +1,21 @@
-package com.ITSMAP.movielist;
+package com.ITSMAP.movielist.GUI;
 
 import android.content.Intent;
 import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ITSMAP.movielist.Adapter.MovieAdapter;
 import com.ITSMAP.movielist.DTO.Movie;
+import com.ITSMAP.movielist.R;
+import com.ITSMAP.movielist.drawableGenerator;
 
 import java.util.Objects;
 
-public class Details extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity {
     private ImageView moviePoster;
     private TextView moviePlot;
     private TextView movieTitle;
@@ -22,9 +25,10 @@ public class Details extends AppCompatActivity {
     private TextView movieUserComment;
     private TextView movieGenres;
     private Button OK_Btn;
-    private drawableGenerator drawableGenerator;
+    private com.ITSMAP.movielist.drawableGenerator drawableGenerator;
     private Movie clickedMovie;
     private String MOVIE_OBJECT_KEY = "Movie";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +38,7 @@ public class Details extends AppCompatActivity {
         if (savedInstanceState != null) {
             clickedMovie = savedInstanceState.getParcelable(MOVIE_OBJECT_KEY);
             updateUI(Objects.requireNonNull(clickedMovie));
-        }
-        else {
+        } else {
             Intent intent = getIntent();
             clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable(MovieAdapter.MOVIE_FROM_ADAPTER);
             updateUI(Objects.requireNonNull(clickedMovie));
@@ -44,7 +47,7 @@ public class Details extends AppCompatActivity {
         OK_Btn.setOnClickListener(v -> finish());
     }
 
-    private void initializeUI(){
+    private void initializeUI() {
         moviePoster = findViewById(R.id.details_image);
         moviePlot = findViewById(R.id.details_plot_textView);
         movieTitle = findViewById(R.id.details_movieTitle_textView);
@@ -66,11 +69,10 @@ public class Details extends AppCompatActivity {
         movieiMDB.setText(getString(R.string.details_iMDB));
         movieiMDB.append(movie.getiMDBRating());
         movieUserComment.setText(movie.getUserComment());
-        if (movie.hasUserRating()){
+        if (movie.hasUserRating()) {
             movieUserRating.setText(R.string.edit_activity_user_rating);
             movieUserRating.append(movie.getUserRating());
-        }
-        else {
+        } else {
             movieUserRating.setText(getString(R.string.User_Rating_Not_Set));
         }
         movieGenres.setText(movie.getGenres());
