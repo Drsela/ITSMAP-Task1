@@ -106,7 +106,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         if (requestCode == MOVIE_FROM_ADAPTER_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Movie updatedMovie = Objects.requireNonNull(data.getExtras()).getParcelable("TEST");
-                movieList.set(data.getIntExtra(ADAPTER_POSITION, 0), updatedMovie);
+                int itemToReplace = data.getIntExtra(ADAPTER_POSITION, 0);
+                movieList.set(itemToReplace, updatedMovie);
                 notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {

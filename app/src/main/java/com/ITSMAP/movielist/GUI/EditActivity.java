@@ -81,6 +81,7 @@ public class EditActivity extends AppCompatActivity {
 
             Intent returnIntent = new Intent();
             returnIntent.putExtra("TEST", clickedMovie);
+            returnIntent.putExtra(MovieAdapter.ADAPTER_POSITION, ADAPTER_POSITION_FROM_RECYCLE_VIEW);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         });
