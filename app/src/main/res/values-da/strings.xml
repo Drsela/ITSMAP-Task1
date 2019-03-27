@@ -20,4 +20,5 @@
     <string name="movie_not_seen">Ikke set</string>
     <string name="Plot"><u>Plot</u></string>
     <string name="watchStatus">Status:\u0020 </string>
+    <string name="SEARCH_ACTIVITY_HINT_TEXT">Type movie name</string>
 </resources>

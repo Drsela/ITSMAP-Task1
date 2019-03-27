@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,16 +25,22 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private MovieAdapter movieAdapter;
-    private List<Movie> moviesList;
-
+    private List<com.ITSMAP.movielist.JSONResponse.Movie> moviesList;
+    private FloatingActionButton fab;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         Button exitBtn = findViewById(R.id.main_btn_exit);
 
+        Intent dataAccessService = new Intent(this, com.ITSMAP.movielist.Service.DataAccessService.class);
+        dataAccessService.putExtra("COMMAND","GET_DB_MOVIES");
+        //startService(dataAccessService);
+
+        /*
         moviesList = getMovieListFromPrevSession(getString(R.string.MOVIE_LIST_FROM_PREV_SESSION));
         if (moviesList != null) {
             movieAdapter = new MovieAdapter(moviesList, this);
@@ -42,10 +49,12 @@ public class MainActivity extends AppCompatActivity {
             moviesList = getMovieObjects(data);
             movieAdapter = new MovieAdapter(moviesList, this);
         }
-
-        recyclerView.setAdapter(movieAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        */
+        fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(v -> {
+            Intent searchActivity = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivity(searchActivity);
+        });
         exitBtn.setOnClickListener(v -> finish());
     }
 
@@ -73,11 +82,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        movieAdapter.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     protected void onPause() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
@@ -95,5 +99,18 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<List<Movie>>() {
         }.getType();
         return gson.fromJson(json, type);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        if(intent.getStringExtra("methodName").equals("myMethod"))
+        {
+            moviesList = intent.getParcelableArrayListExtra("DB_MOVIES");
+            movieAdapter = new MovieAdapter(moviesList, this);
+            recyclerView.setAdapter(movieAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
     }
 }
