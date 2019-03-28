@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ITSMAP.movielist.JSONResponse.Search;
 import com.ITSMAP.movielist.R;
@@ -45,6 +46,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder viewHolder, int i) {
         Search searchItem = searchList.get(i);
         viewHolder.movieTitle.setText(searchItem.getTitle());
+
     }
 
     @Override
@@ -65,6 +67,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 dataAccessService.putExtra("COMMAND","ADD_MOVIE_FROM_API_ID");
                 dataAccessService.putExtra("ADDITIONAL_COMMAND",imdbId);
                 context.startService(dataAccessService);
+                Toast.makeText(context, "Fetching: " + searchList.get(getAdapterPosition()).getTitle() , Toast.LENGTH_SHORT).show();
             });
         }
     }

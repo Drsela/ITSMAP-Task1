@@ -13,7 +13,7 @@ public class drawableGenerator {
     }
 
     public Drawable getDrawableByGenre(Movie currentMovie) {
-        String genres = currentMovie.getGenres();
+        String genres = currentMovie.getGenre();
         if (genres.contains("Sci-fi")) {
             return context.getResources().getDrawable(R.drawable.category_sci_fi);
         }

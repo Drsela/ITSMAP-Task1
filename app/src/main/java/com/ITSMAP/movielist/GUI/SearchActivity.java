@@ -1,5 +1,6 @@
 package com.ITSMAP.movielist.GUI;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,17 +25,19 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
 
-    boolean MockData = true;
     private SearchAdapter searchAdapter;
     private EditText searchTextBox;
     private Button searchButton;
     private RecyclerView recycleView;
     private List<Search> searchResults;
+    private ProgressDialog Dialog;
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             searchResults.clear();
             List<Search> searchResultsFromService = intent.getParcelableArrayListExtra("SEARCHED_MOVIES");
+            Dialog.dismiss();
             searchResults.addAll(searchResultsFromService);
             searchAdapter.notifyDataSetChanged();
         }
@@ -44,6 +47,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         initView();
+        Dialog = new ProgressDialog(this);
     }
 
     private void initView() {
@@ -73,6 +77,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     searchIntent.putExtra("COMMAND","SEARCH_MOVIES");
                     searchIntent.putExtra("ADDITIONAL_COMMAND",searchTextBox.getText().toString());
                     startService(searchIntent);
+                    Dialog.setMessage("Fetching movies from API");
+                    Dialog.show();
                 }
                 break;
         }

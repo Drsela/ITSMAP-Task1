@@ -3,7 +3,7 @@
     <string name="details_userComment_text"><u>Kommentar</u></string>
     <string name="detail_userComment_text">Skriv en kommentar vedrørende filmen</string>
     <string name="details_genres_text">Genrer:</string>
-    <string name="edit_movie_watched_status">Set</string>
+    <string name="movie_status_watched">Status: Set</string>
     <string name="save_text">Gem</string>
     <string name="edit_activity_user_rating">Din score:\u0020</string>
     <string name="editActivity_movieTitle_Placeholder">Film Titel</string>
@@ -17,8 +17,10 @@
     <string name="edit_activity_clear_btn">Ryd</string>
     <string name="no_prev_user_rating">Bedøm filmen</string>
     <string name="edit_text_checkboxText">Har du set filmen?</string>
-    <string name="movie_not_seen">Ikke set</string>
+    <string name="movie_status_unwatched">Status: Ikke set</string>
     <string name="Plot"><u>Plot</u></string>
-    <string name="watchStatus">Status:\u0020 </string>
     <string name="SEARCH_ACTIVITY_HINT_TEXT">Type movie name</string>
+    <string name="SEARCH_ACTIVITY_SEARCH_BUTTON">Søg</string>
+    <string name="watchStatus">Watch status</string>
+
 </resources>

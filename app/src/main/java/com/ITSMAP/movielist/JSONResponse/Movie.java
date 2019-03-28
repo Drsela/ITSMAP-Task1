@@ -105,6 +105,39 @@ public class Movie implements Parcelable {
     @Expose
     private String response;
 
+    @Expose(serialize = false)
+    private String userComment = null;
+
+    @Expose(serialize = false)
+    private String personalRating = null;
+
+    @Expose(serialize = false)
+    private boolean watched = false;
+
+    public String getUserComment() {
+        return userComment;
+    }
+
+    public void setUserComment(String userComment) {
+        this.userComment = userComment;
+    }
+
+    public String getPersonalRating() {
+        return personalRating;
+    }
+
+    public void setPersonalRating(String personalRating) {
+        this.personalRating = personalRating;
+    }
+
+    public boolean isWatched() {
+        return watched;
+    }
+
+    public void setWatched(boolean watched) {
+        this.watched = watched;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -305,6 +338,10 @@ public class Movie implements Parcelable {
         this.response = response;
     }
 
+
+    public Movie() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -338,9 +375,9 @@ public class Movie implements Parcelable {
         dest.writeString(this.production);
         dest.writeString(this.website);
         dest.writeString(this.response);
-    }
-
-    public Movie() {
+        dest.writeString(this.userComment);
+        dest.writeString(this.personalRating);
+        dest.writeByte(this.watched ? (byte) 1 : (byte) 0);
     }
 
     protected Movie(Parcel in) {
@@ -371,6 +408,9 @@ public class Movie implements Parcelable {
         this.production = in.readString();
         this.website = in.readString();
         this.response = in.readString();
+        this.userComment = in.readString();
+        this.personalRating = in.readString();
+        this.watched = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {

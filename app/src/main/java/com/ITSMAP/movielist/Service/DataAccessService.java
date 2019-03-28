@@ -3,10 +3,10 @@ package com.ITSMAP.movielist.Service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.ITSMAP.movielist.DAL.APICommunication;
 import com.ITSMAP.movielist.DAL.MovieDatabase;
-import com.ITSMAP.movielist.GUI.MainActivity;
 import com.ITSMAP.movielist.JSONResponse.Movie;
 
 import java.util.ArrayList;
@@ -25,27 +25,20 @@ public class DataAccessService extends IntentService {
         MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
 
         if(command.equals("GET_DB_MOVIES")){
-            List<Movie> dbMovies = db.movieDao().getMovies().getValue();
-            Intent returnToMainActivity = new Intent(getBaseContext(), MainActivity.class);
-            returnToMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            List<Movie> dbMovies = db.movieDao().getMovies();
+            Intent returnToMainActivity = new Intent("DB_MOVIES_RESULT");
             returnToMainActivity.putParcelableArrayListExtra("DB_MOVIES", (ArrayList<? extends Parcelable>) dbMovies);
-            getApplication().startActivity(returnToMainActivity);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(returnToMainActivity);
         }
 
         if(command.equals("GET_SPECIFIC_MOVIE")) {
-            final int movieId = intent.getIntExtra("MOVIE_ID",0);
-            Movie dbMovie = db.movieDao().getMovie(movieId);
-            if(additionalCommand.equals("DATA_TO_DETAIL_ACTIVITY")){
-                Intent returnToDetailActivity = new Intent();
-                returnToDetailActivity.putExtra("DB_MOVIE",dbMovie);
-                startActivity(returnToDetailActivity);
+            if(additionalCommand != null){
+                Movie dbMovie = db.movieDao().getMovie(Integer.valueOf(additionalCommand));
+                Intent returnToDetailActivity = new Intent("MOVIE_FROM_DB_BY_ID");
+                returnToDetailActivity.putExtra("MOVIE",dbMovie);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(returnToDetailActivity);
             }
 
-            if(additionalCommand.equals("DATA_TO_EDIT_ACTIVITY")){
-                Intent returnToEditActivity = new Intent();
-                returnToEditActivity.putExtra("DB_MOVIE",dbMovie);
-                startActivity(returnToEditActivity);
-            }
         }
 
         if(command.equals("ADD_MOVIE_FROM_API_ID")) {
@@ -59,6 +52,21 @@ public class DataAccessService extends IntentService {
             if (additionalCommand != null) {
                 APICommunication API = new APICommunication();
                 API.performSearch(additionalCommand,this);
+            }
+        }
+
+        if(command.equals("GET_POSTER")) {
+            if(additionalCommand != null){
+                String posterUrl = additionalCommand;
+                APICommunication API = new APICommunication();
+                API.getPoster(posterUrl,this);
+            }
+        }
+
+        if(command.equals("UPDATE_MOVIE")){
+            if(additionalCommand.equals("UPDATE")){
+                Movie movieToUpdate = intent.getParcelableExtra("MOVIE_TO_UPDATE");
+                db.movieDao().updateMovie(movieToUpdate);
             }
         }
     }

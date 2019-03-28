@@ -1,6 +1,5 @@
 package com.ITSMAP.movielist.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -50,7 +49,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             com.ITSMAP.movielist.JSONResponse.Movie currentMovie = movieList.get(i);
             viewHolder.movieName.setText(currentMovie.getTitle());
             viewHolder.movieRating.setText(currentMovie.getImdbRating());
-            viewHolder.movieSeenStatus.setText(R.string.watchStatus);
+            viewHolder.movieSeenStatus.setText(currentMovie.isWatched() ? context.getString(R.string.movie_status_watched) : context.getString(R.string.movie_status_unwatched));
+
+            // Get Poster
+
+
             //viewHolder.movieSeenStatus.append(currentMovie.hasBeenWatched() ? context.getResources().getString(R.string.edit_movie_watched_status) : context.getResources().getString(R.string.movie_not_seen));
             //viewHolder.movieUserRating.setText(currentMovie.hasUserRating() ? currentMovie.getUserRating() : null);
             //viewHolder.poster.setImageDrawable(drawableGenerator.getDrawableByGenre(currentMovie));
@@ -79,15 +82,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             poster = itemView.findViewById(R.id.imageView);
 
             itemView.setOnClickListener(v -> {
-                com.ITSMAP.movielist.JSONResponse.Movie clickedMovie = movieList.get(getAdapterPosition());
                 Intent detailsIntent = new Intent(context, DetailsActivity.class);
+                detailsIntent.putExtra("MOVIE_DB_ID",movieList.get(getAdapterPosition()).getId());
                 context.startActivity(detailsIntent);
             });
 
             itemView.setOnLongClickListener(v -> {
-                com.ITSMAP.movielist.JSONResponse.Movie clickedMovie = movieList.get(getAdapterPosition());
-                Intent detailsIntent = new Intent(context, EditActivity.class);
-                ((Activity) context).startActivityForResult(detailsIntent, MOVIE_FROM_ADAPTER_CODE);
+                Intent editIntent = new Intent(context, EditActivity.class);
+                editIntent.putExtra("MOVIE_DB_ID",movieList.get(getAdapterPosition()).getId());
+                context.startActivity(editIntent);
                 return true;
             });
         }

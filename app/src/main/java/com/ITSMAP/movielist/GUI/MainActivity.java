@@ -1,25 +1,24 @@
 package com.ITSMAP.movielist.GUI;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.ITSMAP.movielist.Adapter.MovieAdapter;
-import com.ITSMAP.movielist.CSVReader;
-import com.ITSMAP.movielist.DTO.Movie;
+import com.ITSMAP.movielist.JSONResponse.Movie;
 import com.ITSMAP.movielist.R;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private List<com.ITSMAP.movielist.JSONResponse.Movie> moviesList;
     private FloatingActionButton fab;
     RecyclerView recyclerView;
+    Intent dataAccessService;
+    private ProgressDialog Dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,21 +36,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         Button exitBtn = findViewById(R.id.main_btn_exit);
-
-        Intent dataAccessService = new Intent(this, com.ITSMAP.movielist.Service.DataAccessService.class);
+        moviesList = new ArrayList<>();
+        Dialog = new ProgressDialog(this);
+        dataAccessService = new Intent(this, com.ITSMAP.movielist.Service.DataAccessService.class);
         dataAccessService.putExtra("COMMAND","GET_DB_MOVIES");
-        //startService(dataAccessService);
+        startService(dataAccessService);
+        Dialog.setMessage("Fetching from database");
+        Dialog.show();
+        movieAdapter = new MovieAdapter(moviesList, this);
+        recyclerView.setAdapter(movieAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /*
-        moviesList = getMovieListFromPrevSession(getString(R.string.MOVIE_LIST_FROM_PREV_SESSION));
-        if (moviesList != null) {
-            movieAdapter = new MovieAdapter(moviesList, this);
-        } else {
-            List data = getDataFromCsvFile();
-            moviesList = getMovieObjects(data);
-            movieAdapter = new MovieAdapter(moviesList, this);
-        }
-        */
         fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(v -> {
             Intent searchActivity = new Intent(getApplicationContext(), SearchActivity.class);
@@ -58,59 +55,37 @@ public class MainActivity extends AppCompatActivity {
         exitBtn.setOnClickListener(v -> finish());
     }
 
-    private List getDataFromCsvFile() {
-        InputStream stream = getResources().openRawResource(R.raw.movielist);
-        CSVReader reader = new CSVReader(stream);
-        return reader.getMovies();
-    }
-
-    private ArrayList<Movie> getMovieObjects(List<Movie> data) {
-        ArrayList<Movie> movieList = new ArrayList<>();
-
-        for (int i = 0; i < data.size(); i++) {
-            Movie currentMovie = data.get(i);
-            if (!currentMovie.getPlot().equals("Plot")) {
-                movieList.add(currentMovie);
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            moviesList.clear();
+                List<Movie> databaseMovies = intent.getParcelableArrayListExtra("DB_MOVIES");
+                if(databaseMovies != null) {
+                    Toast.makeText(context, "Items from DB: " + String.valueOf(databaseMovies.size()), Toast.LENGTH_SHORT).show();
+                    moviesList.addAll(databaseMovies);
+                    movieAdapter.notifyDataSetChanged();
+                }
+                else {
+                Toast.makeText(context, "No objects in DB", Toast.LENGTH_SHORT).show();
             }
+            Dialog.dismiss();
         }
+    };
 
-        for (Movie movie : movieList) {
-            movie.setUserRating(false);
-            movie.setUserComment(false);
-        }
-        return movieList;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("DB_MOVIES_RESULT"));
+        dataAccessService = new Intent(this, com.ITSMAP.movielist.Service.DataAccessService.class);
+        dataAccessService.putExtra("COMMAND","GET_DB_MOVIES");
+        startService(dataAccessService);
+        Dialog.show();
     }
 
     @Override
     protected void onPause() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(moviesList);
-        editor.putString(getString(R.string.MOVIE_LIST_FROM_PREV_SESSION), json);
-        editor.apply();
         super.onPause();
-    }
-
-    private List<Movie> getMovieListFromPrevSession(String key) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Gson gson = new Gson();
-        String json = prefs.getString(key, null);
-        Type type = new TypeToken<List<Movie>>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        super.onNewIntent(intent);
-        if(intent.getStringExtra("methodName").equals("myMethod"))
-        {
-            moviesList = intent.getParcelableArrayListExtra("DB_MOVIES");
-            movieAdapter = new MovieAdapter(moviesList, this);
-            recyclerView.setAdapter(movieAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        Dialog.dismiss();
     }
 }

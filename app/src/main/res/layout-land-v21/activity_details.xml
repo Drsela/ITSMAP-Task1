@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/editActivity_movieTitle_Placeholder"
         android:textAlignment="center"
         android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +36,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="88dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/iMDB_Rating_Placeholder"
         app:layout_constraintBottom_toTopOf="@+id/details_userRating_textView"
         app:layout_constraintStart_toEndOf="@+id/details_image"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:text="@string/editActivity_userRating_Placeholder"
         app:layout_constraintBottom_toBottomOf="@+id/details_image"
         app:layout_constraintStart_toEndOf="@+id/details_image"
         android:layout_marginLeft="20dp" />
@@ -68,7 +65,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/details_userComment_text"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/details_plot_textView" />
@@ -79,7 +75,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/details_genres_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_movieTitle_textView"
         android:layout_marginLeft="16dp" />
@@ -131,7 +126,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
-        android:text="@string/Plot"
         app:layout_constraintStart_toEndOf="@+id/details_movieTitle_textView"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="28dp" />
@@ -142,7 +136,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="236dp"
         android:layout_marginTop="8dp"
-        android:text="@string/edit_movie_watched_status"
         app:layout_constraintEnd_toEndOf="@+id/details_plot_textView"
         app:layout_constraintStart_toEndOf="@+id/details_UserCommentPlaceholder_textView"
         app:layout_constraintTop_toBottomOf="@+id/details_plot_textView"

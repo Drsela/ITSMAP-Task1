@@ -1,6 +1,5 @@
 package com.ITSMAP.movielist.DAL;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -18,7 +17,7 @@ public interface MovieQueries {
     void insertMovie(Movie movie);
 
     @Query("SELECT * FROM db_movies")
-    LiveData<List<Movie>> getMovies();
+    List<Movie> getMovies();
 
     @Query("SELECT * FROM db_movies WHERE id = :movieId")
     Movie getMovie(int movieId);

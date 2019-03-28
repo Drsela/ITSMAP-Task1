@@ -1,8 +1,11 @@
 package com.ITSMAP.movielist.GUI;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -10,13 +13,13 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.ITSMAP.movielist.Adapter.MovieAdapter;
-import com.ITSMAP.movielist.DTO.Movie;
+import com.ITSMAP.movielist.JSONResponse.Movie;
 import com.ITSMAP.movielist.R;
+import com.ITSMAP.movielist.Service.DataAccessService;
 
-import java.util.Objects;
 
 public class EditActivity extends AppCompatActivity {
+    private Movie databaseMovie;
     private TextView movieTitle;
     private TextView userRating;
     private SeekBar userRatingSeekbar;
@@ -26,63 +29,28 @@ public class EditActivity extends AppCompatActivity {
     private Button clearBtn;
     private float seekbarValue;
     private CheckBox watchedCheckbox;
-    private Movie clickedMovie;
-    private String SEEKBAR_VALUE_KEY = "seekbarValue";
-    private String WATCH_STATUS_KEY = "watchStatus";
-    private String COMMENT_KEY = "comment";
-    private String MOVIE_TITLE_KEY = "movieTitle";
-    private String USER_RATING_KEY = "userRating";
-    private int ADAPTER_POSITION_FROM_RECYCLE_VIEW;
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            databaseMovie = intent.getParcelableExtra("MOVIE");
+            updateUI(databaseMovie);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        getServiceInformation();
         initializeUI();
-        Intent intent = getIntent();
-        clickedMovie = Objects.requireNonNull(intent.getExtras()).getParcelable(MovieAdapter.MOVIE_FROM_ADAPTER);
-        ADAPTER_POSITION_FROM_RECYCLE_VIEW = intent.getIntExtra(MovieAdapter.ADAPTER_POSITION, 0);
-        if (savedInstanceState != null) {
-            int oldSeekbarValue = savedInstanceState.getInt(SEEKBAR_VALUE_KEY);
-            boolean checkbox = savedInstanceState.getBoolean(WATCH_STATUS_KEY);
-            boolean hasUserRating = savedInstanceState.getBoolean(USER_RATING_KEY);
-            String oldComment = savedInstanceState.getString(COMMENT_KEY);
-            String title = savedInstanceState.getString(MOVIE_TITLE_KEY);
-            clickedMovie.setUserRating(hasUserRating);
-            userRatingSeekbar.setProgress(oldSeekbarValue);
-            watchedCheckbox.setChecked(checkbox);
-            userComment.setText(oldComment);
-            movieTitle.setText(title);
-            if (!hasUserRating) {
-                userRating.setText(R.string.no_prev_user_rating);
-            } else {
-                userRating.setText(getString(R.string.edit_activity_user_rating));
-                seekbarValue = ((float) oldSeekbarValue / 10);
-                userRating.append(" " + String.valueOf(seekbarValue));
-            }
-        } else {
-            updateUI(Objects.requireNonNull(clickedMovie));
-        }
 
         saveBtn.setOnClickListener(v -> {
-            Movie updatedMovie = updateMovieSettings(clickedMovie);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("TEST", updatedMovie);
-            returnIntent.putExtra(MovieAdapter.ADAPTER_POSITION, ADAPTER_POSITION_FROM_RECYCLE_VIEW);
-            setResult(Activity.RESULT_OK, returnIntent);
-            finish();
+            saveChangesToDatabase();
+            //finish();
         });
         clearBtn.setOnClickListener(v -> {
-            clickedMovie.setUserRating(null);
-            clickedMovie.setUserComment(null);
-            clickedMovie.setWatchStatus(false);
-            clickedMovie.setUserComment(false);
-            clickedMovie.setUserRating(false);
-
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("TEST", clickedMovie);
-            returnIntent.putExtra(MovieAdapter.ADAPTER_POSITION, ADAPTER_POSITION_FROM_RECYCLE_VIEW);
-            setResult(Activity.RESULT_OK, returnIntent);
+            removeUserInfo();
             finish();
         });
         cancelBtn.setOnClickListener((View v) -> finish());
@@ -93,6 +61,7 @@ public class EditActivity extends AppCompatActivity {
                 seekbarValue = ((float) progress / 10);
                 userRating.setText(getString(R.string.edit_activity_user_rating));
                 userRating.append(" " + String.valueOf(seekbarValue));
+                databaseMovie.setPersonalRating(String.valueOf(seekbarValue));
             }
 
             @Override
@@ -102,9 +71,40 @@ public class EditActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                clickedMovie.setUserRating(true);
+
             }
         });
+    }
+
+    private void removeUserInfo() {
+        databaseMovie.setPersonalRating(null);
+        databaseMovie.setUserComment(null);
+        databaseMovie.setWatched(false);
+        Intent updateMovieIntent = new Intent(this, DataAccessService.class);
+        updateMovieIntent.putExtra("COMMAND","UPDATE_MOVIE");
+        updateMovieIntent.putExtra("MOVIE_TO_UPDATE", databaseMovie);
+        startService(updateMovieIntent);
+        updateUI(databaseMovie);
+    }
+
+    private void getServiceInformation() {
+        Intent intent = getIntent();
+        int movieId = intent.getIntExtra("MOVIE_DB_ID",5000);
+
+        Intent getMovieIntent = new Intent(this, DataAccessService.class);
+        getMovieIntent.putExtra("COMMAND", "GET_SPECIFIC_MOVIE");
+        getMovieIntent.putExtra("ADDITIONAL_COMMAND", String.valueOf(movieId));
+        startService(getMovieIntent);
+    }
+
+    private void saveChangesToDatabase(){
+        Intent updateMovieIntent = new Intent(this, DataAccessService.class);
+        databaseMovie.setWatched(watchedCheckbox.isChecked());
+        databaseMovie.setUserComment(this.userComment.getText().toString());
+        updateMovieIntent.putExtra("COMMAND","UPDATE_MOVIE");
+        updateMovieIntent.putExtra("ADDITIONAL_COMMAND","UPDATE");
+        updateMovieIntent.putExtra("MOVIE_TO_UPDATE", databaseMovie);
+        startService(updateMovieIntent);
     }
 
     private void initializeUI() {
@@ -119,45 +119,23 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void updateUI(Movie movie) {
-        movieTitle.setText(movie.getName());
-
-        if (movie.hasUserRating()) {
-            userRating.setText(getString(R.string.edit_activity_user_rating));
-            userRating.append(movie.getUserRating());
-            float userRating = Float.valueOf(movie.getUserRating());
-            userRatingSeekbar.setProgress(Math.round(userRating * 10));
-            seekbarValue = ((float) userRatingSeekbar.getProgress() / 10);
-        } else {
-            userRating.setText(getString(R.string.no_prev_user_rating));
-        }
-
-        if (movie.hasUserComment()) {
-            userComment.setText(movie.getUserComment());
-        }
-        if (movie.hasBeenWatched()) {
-            watchedCheckbox.setChecked(true);
-        }
-    }
-
-    private Movie updateMovieSettings(Movie movie) {
-        movie.setUserRating(String.valueOf(seekbarValue));
-        movie.setUserRating(true);
-        movie.setUserComment(userComment.getText().toString());
-        movie.setUserComment(true);
-        if (watchedCheckbox.isChecked())
-            movie.setWatchStatus(true);
-        else
-            movie.setWatchStatus(false);
-        return movie;
+        this.movieTitle.setText(movie.getTitle());
+        this.userRating.setText((movie.getPersonalRating() != null) ? movie.getPersonalRating() : getString(R.string.no_prev_user_rating));
+        this.userRatingSeekbar.setProgress((movie.getPersonalRating() != null) ? Double.valueOf(Double.valueOf(movie.getPersonalRating())*10).intValue() : 50);  //Starts at 50%
+        this.userComment.setText(movie.getUserComment());
+        this.watchedCheckbox.setChecked(movie.isWatched());
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(SEEKBAR_VALUE_KEY, userRatingSeekbar.getProgress());
-        savedInstanceState.putBoolean(WATCH_STATUS_KEY, watchedCheckbox.isChecked());
-        savedInstanceState.putBoolean(USER_RATING_KEY, clickedMovie.hasUserRating());
-        savedInstanceState.putString(COMMENT_KEY, userComment.getText().toString());
-        savedInstanceState.putString(MOVIE_TITLE_KEY, movieTitle.getText().toString());
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("MOVIE_FROM_DB_BY_ID"));
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
 }
