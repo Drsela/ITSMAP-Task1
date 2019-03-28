@@ -53,6 +53,7 @@ public class DetailsActivity extends AppCompatActivity {
             Bitmap poster = intent.getParcelableExtra("POSTER");
             setPoster(poster);
             updateUI(databaseMovie);
+            progressDialog.dismiss();
         }
     };
 
@@ -60,7 +61,6 @@ public class DetailsActivity extends AppCompatActivity {
         if(poster != null){
             this.poster.setImageBitmap(poster);
         }
-        progressDialog.dismiss();
     }
 
     @Override
@@ -104,9 +104,9 @@ public class DetailsActivity extends AppCompatActivity {
         this.title.setText(movie.getTitle());
         this.iMDBRating.setText(String.format("%s%s", getString(R.string.details_iMDB), movie.getImdbRating()));
         this.watchText.setText(movie.isWatched() ? getString(R.string.movie_status_watched) : getString(R.string.movie_status_unwatched));
-        this.userRatingText.setText(String.format("%s%s", getString(R.string.edit_activity_user_rating), movie.getPersonalRating()));
+        this.userRatingText.setText(movie.getPersonalRating() != null ? String.format("%s%s", getString(R.string.edit_activity_user_rating), movie.getPersonalRating()) : "");
         this.userCommentText.setText(movie.getUserComment());
-        this.movieGenres.setText(movie.getGenre());
+        this.movieGenres.setText(String.format("%s%s", getString(R.string.details_genres_text), movie.getGenre()));
     }
 
     @Override

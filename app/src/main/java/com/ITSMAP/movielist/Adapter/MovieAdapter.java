@@ -14,16 +14,17 @@ import com.ITSMAP.movielist.GUI.DetailsActivity;
 import com.ITSMAP.movielist.GUI.EditActivity;
 import com.ITSMAP.movielist.R;
 import com.ITSMAP.movielist.drawableGenerator;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
-    public static final String ADAPTER_POSITION = "ADAPTER POSITION";
+
     private List<com.ITSMAP.movielist.JSONResponse.Movie> movieList;
     private Context context;
     private static final Integer MOVIE_FROM_ADAPTER_CODE = 100;
     private com.ITSMAP.movielist.drawableGenerator drawableGenerator;
-    public static String MOVIE_FROM_ADAPTER = "Adapter movie";
+
 
     public MovieAdapter(List<com.ITSMAP.movielist.JSONResponse.Movie> movies, Context context) {
         movieList = movies;
@@ -50,9 +51,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             viewHolder.movieName.setText(currentMovie.getTitle());
             viewHolder.movieRating.setText(currentMovie.getImdbRating());
             viewHolder.movieSeenStatus.setText(currentMovie.isWatched() ? context.getString(R.string.movie_status_watched) : context.getString(R.string.movie_status_unwatched));
-
+            viewHolder.movieUserRating.setText(currentMovie.getPersonalRating() != null ? currentMovie.getPersonalRating() : "");
             // Get Poster
-
+            Glide
+                    .with(context)
+                    .load(currentMovie.getPoster())
+                    .into(viewHolder.poster);
 
             //viewHolder.movieSeenStatus.append(currentMovie.hasBeenWatched() ? context.getResources().getString(R.string.edit_movie_watched_status) : context.getResources().getString(R.string.movie_not_seen));
             //viewHolder.movieUserRating.setText(currentMovie.hasUserRating() ? currentMovie.getUserRating() : null);

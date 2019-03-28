@@ -123,5 +123,18 @@
         app:layout_constraintStart_toEndOf="@+id/edit_activity_clear_btn"
         app:layout_constraintTop_toTopOf="@+id/edit_activity_clear_btn" />
 
+    <Button
+        android:id="@+id/editActivity_delete_btn"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/DELETE_MODEL_BUTTON"
+        android:textSize="14sp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="@+id/editActivity_save_btn"
+        app:layout_constraintStart_toStartOf="@+id/editActivity_cancel_btn"
+        app:layout_constraintTop_toBottomOf="@+id/edit_activity_clear_btn" />
+
 
 </android.support.constraint.ConstraintLayout>

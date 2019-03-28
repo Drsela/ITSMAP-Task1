@@ -27,6 +27,7 @@ public class EditActivity extends AppCompatActivity {
     private Button saveBtn;
     private Button cancelBtn;
     private Button clearBtn;
+    private Button deleteBtn;
     private float seekbarValue;
     private CheckBox watchedCheckbox;
 
@@ -47,10 +48,15 @@ public class EditActivity extends AppCompatActivity {
 
         saveBtn.setOnClickListener(v -> {
             saveChangesToDatabase();
-            //finish();
+            finish();
         });
         clearBtn.setOnClickListener(v -> {
             removeUserInfo();
+            finish();
+        });
+
+        deleteBtn.setOnClickListener(v -> {
+            deleteMovie();
             finish();
         });
         cancelBtn.setOnClickListener((View v) -> finish());
@@ -82,9 +88,18 @@ public class EditActivity extends AppCompatActivity {
         databaseMovie.setWatched(false);
         Intent updateMovieIntent = new Intent(this, DataAccessService.class);
         updateMovieIntent.putExtra("COMMAND","UPDATE_MOVIE");
+        updateMovieIntent.putExtra("ADDITIONAL_COMMAND","UPDATE");
         updateMovieIntent.putExtra("MOVIE_TO_UPDATE", databaseMovie);
         startService(updateMovieIntent);
         updateUI(databaseMovie);
+    }
+
+    private void deleteMovie(){
+        Intent updateMovieIntent = new Intent(this, DataAccessService.class);
+        updateMovieIntent.putExtra("COMMAND","DELETE_MOVIE");
+        updateMovieIntent.putExtra("ADDITIONAL_COMMAND","DELETE");
+        updateMovieIntent.putExtra("MOVIE_TO_DELETE", databaseMovie);
+        startService(updateMovieIntent);
     }
 
     private void getServiceInformation() {
@@ -116,6 +131,7 @@ public class EditActivity extends AppCompatActivity {
         saveBtn = findViewById(R.id.editActivity_save_btn);
         cancelBtn = findViewById(R.id.editActivity_cancel_btn);
         clearBtn = findViewById(R.id.edit_activity_clear_btn);
+        deleteBtn = findViewById(R.id.editActivity_delete_btn);
     }
 
     private void updateUI(Movie movie) {

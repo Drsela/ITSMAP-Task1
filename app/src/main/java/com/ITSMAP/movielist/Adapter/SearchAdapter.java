@@ -67,7 +67,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 dataAccessService.putExtra("COMMAND","ADD_MOVIE_FROM_API_ID");
                 dataAccessService.putExtra("ADDITIONAL_COMMAND",imdbId);
                 context.startService(dataAccessService);
-                Toast.makeText(context, "Fetching: " + searchList.get(getAdapterPosition()).getTitle() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Fetching: " + searchList.get(getAdapterPosition()).getTitle() +". \nPress back to see movies", Toast.LENGTH_SHORT).show();
             });
         }
     }

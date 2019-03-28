@@ -26,26 +26,22 @@ public class MainActivity extends AppCompatActivity {
     private MovieAdapter movieAdapter;
     private List<com.ITSMAP.movielist.JSONResponse.Movie> moviesList;
     private FloatingActionButton fab;
-    RecyclerView recyclerView;
-    Intent dataAccessService;
+    private RecyclerView recyclerView;
+    private Intent dataAccessService;
     private ProgressDialog Dialog;
+    private Button exitBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        Button exitBtn = findViewById(R.id.main_btn_exit);
-        moviesList = new ArrayList<>();
-        Dialog = new ProgressDialog(this);
+        initiateUI();
+
         dataAccessService = new Intent(this, com.ITSMAP.movielist.Service.DataAccessService.class);
         dataAccessService.putExtra("COMMAND","GET_DB_MOVIES");
         startService(dataAccessService);
         Dialog.setMessage("Fetching from database");
         Dialog.show();
-        movieAdapter = new MovieAdapter(moviesList, this);
-        recyclerView.setAdapter(movieAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(v -> {
@@ -61,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             moviesList.clear();
                 List<Movie> databaseMovies = intent.getParcelableArrayListExtra("DB_MOVIES");
                 if(databaseMovies != null) {
-                    Toast.makeText(context, "Items from DB: " + String.valueOf(databaseMovies.size()), Toast.LENGTH_SHORT).show();
                     moviesList.addAll(databaseMovies);
                     movieAdapter.notifyDataSetChanged();
                 }
@@ -71,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
             Dialog.dismiss();
         }
     };
+
+    private void initiateUI() {
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        exitBtn = findViewById(R.id.main_btn_exit);
+        moviesList = new ArrayList<>();
+        Dialog = new ProgressDialog(this);
+        movieAdapter = new MovieAdapter(moviesList, this);
+        recyclerView.setAdapter(movieAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
 
     @Override
     protected void onResume() {

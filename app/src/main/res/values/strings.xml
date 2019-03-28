@@ -3,7 +3,7 @@
     <string name="button_exit">Exit</string>
     <string name="details_userComment_text"><u>Comment</u></string>
     <string name="detail_userComment_text">Write a comment about this movie</string>
-    <string name="details_genres_text">Genres:</string>
+    <string name="details_genres_text">Genres:\u0020</string>
     <string name="movie_status_watched">Status: Watched</string>
     <string name="save_text">Save</string>
     <string name="edit_activity_user_rating">User rating:\u0020</string>
@@ -23,4 +23,5 @@
     <string name="SEARCH_ACTIVITY_HINT_TEXT">Type movie name</string>
     <string name="SEARCH_ACTIVITY_SEARCH_BUTTON">Search</string>
     <string name="watchStatus">Watch status</string>
+    <string name="DELETE_MODEL_BUTTON">Delete movie from database</string>
 </resources>

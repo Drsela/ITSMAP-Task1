@@ -69,5 +69,12 @@ public class DataAccessService extends IntentService {
                 db.movieDao().updateMovie(movieToUpdate);
             }
         }
+
+        if(command.equals("DELETE_MOVIE")) {
+            if (additionalCommand.equals("DELETE")) {
+                Movie movieToDelete = intent.getParcelableExtra("MOVIE_TO_DELETE");
+                db.movieDao().deleteMovie(movieToDelete);
+            }
+        }
     }
 }

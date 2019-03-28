@@ -22,5 +22,6 @@
     <string name="SEARCH_ACTIVITY_HINT_TEXT">Type movie name</string>
     <string name="SEARCH_ACTIVITY_SEARCH_BUTTON">Søg</string>
     <string name="watchStatus">Watch status</string>
+    <string name="DELETE_MODEL_BUTTON">Delete movie from database</string>
 
 </resources>
