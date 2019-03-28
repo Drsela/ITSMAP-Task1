@@ -88,4 +88,9 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         Dialog.dismiss();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

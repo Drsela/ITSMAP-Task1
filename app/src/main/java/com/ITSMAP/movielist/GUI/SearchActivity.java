@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ITSMAP.movielist.Adapter.SearchAdapter;
 import com.ITSMAP.movielist.JSONResponse.Search;
@@ -37,9 +38,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         public void onReceive(Context context, Intent intent) {
             searchResults.clear();
             List<Search> searchResultsFromService = intent.getParcelableArrayListExtra("SEARCHED_MOVIES");
-            Dialog.dismiss();
-            searchResults.addAll(searchResultsFromService);
+            if(searchResultsFromService != null)
+            {
+                searchResults.addAll(searchResultsFromService);
+            }
+            else {
+                Toast.makeText(context, "Search yielded no results", Toast.LENGTH_SHORT).show();
+            }
             searchAdapter.notifyDataSetChanged();
+            Dialog.dismiss();
         }
     };
     @Override

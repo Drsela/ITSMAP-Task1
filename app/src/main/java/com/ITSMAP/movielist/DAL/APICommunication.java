@@ -91,7 +91,7 @@ public class APICommunication {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        Log.d("ERROR", "onResponse: " + error.toString());
+                        Log.e("ERROR", "onResponse: " + error.toString());
                     }
                 });
 

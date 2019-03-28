@@ -31,4 +31,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="8dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_add_icon_24px"
+        app:layout_constraintBottom_toTopOf="@+id/main_btn_exit"
+        app:layout_constraintEnd_toEndOf="@+id/main_btn_exit"
+        app:layout_constraintStart_toStartOf="@+id/main_btn_exit"
+        app:srcCompat="@color/colorPrimaryDark" />
 </android.support.constraint.ConstraintLayout>
