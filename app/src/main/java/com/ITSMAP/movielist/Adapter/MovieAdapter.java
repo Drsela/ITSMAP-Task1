@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.ITSMAP.movielist.GUI.DetailsActivity;
 import com.ITSMAP.movielist.GUI.EditActivity;
 import com.ITSMAP.movielist.R;
-import com.ITSMAP.movielist.drawableGenerator;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -22,14 +21,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     private List<com.ITSMAP.movielist.JSONResponse.Movie> movieList;
     private Context context;
-    private static final Integer MOVIE_FROM_ADAPTER_CODE = 100;
-    private com.ITSMAP.movielist.drawableGenerator drawableGenerator;
 
 
     public MovieAdapter(List<com.ITSMAP.movielist.JSONResponse.Movie> movies, Context context) {
         movieList = movies;
         this.context = context;
-        drawableGenerator = new drawableGenerator(context);
     }
 
 

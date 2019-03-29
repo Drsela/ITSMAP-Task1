@@ -1,80 +1,142 @@
 package com.ITSMAP.movielist.Service;
 
-import android.app.IntentService;
+
+import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Binder;
+import android.os.IBinder;
 import android.os.Parcelable;
-import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
-import com.ITSMAP.movielist.DAL.APICommunication;
 import com.ITSMAP.movielist.DAL.MovieDatabase;
+import com.ITSMAP.movielist.DAL.RequestQueueSingelton;
 import com.ITSMAP.movielist.JSONResponse.Movie;
+import com.ITSMAP.movielist.JSONResponse.Search;
+import com.ITSMAP.movielist.JSONResponse.SearchResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataAccessService extends IntentService {
+public class DataAccessService extends Service {
+    private final String API_KEY = "b453845";
+    private final String URL_BY_IMDBID = "https://www.omdbapi.com/?apikey="+ API_KEY + "&i=";
+    private final String URL_BY_SEARCH = "https://www.omdbapi.com/?apikey="+ API_KEY + "&s=";
 
-    public DataAccessService(){
-        super("DataAccessService");
+    public final static String ACTION_FETCH_DB_MOVIES = "FETCHING_FROM_DB";
+    public static final String RESULT_FETCH_DB_MOVIES = "FETCHING_FROM_DB_RESULT";
+
+    public final static String ACTION_FETCH_SEARCH_TITLES = "FETCHING_FROM_SEARCH";
+    public final static String RESULT_FETCH_SEARCH_TITLES = "RESULTS_FROM_SEARCH";
+
+    public static final String ACTION_FETCH_DB_SPECIFIC_MOVIE = "ACTION_FETCH_DB_SPECIFIC_MOVIE";
+    public static final String RESULT_FETCH_DB_SPECIFIC_MOVIE = "ACTION_FETCH_DB_SPECIFIC_MOVIE";
+
+
+    private final IBinder mBinder = new LocalBinder();
+
+    public class LocalBinder extends Binder {
+        public DataAccessService getService() {
+            // Return object that can call public methods
+            return DataAccessService.this;
+        }
     }
+
     @Override
-    protected void onHandleIntent(Intent intent) {
-        final String command = intent.getStringExtra("COMMAND");
-        final String additionalCommand = intent.getStringExtra("ADDITIONAL_COMMAND");
-
-        MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
-
-        if(command.equals("GET_DB_MOVIES")){
-            List<Movie> dbMovies = db.movieDao().getMovies();
-            Intent returnToMainActivity = new Intent("DB_MOVIES_RESULT");
-            returnToMainActivity.putParcelableArrayListExtra("DB_MOVIES", (ArrayList<? extends Parcelable>) dbMovies);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(returnToMainActivity);
+    public IBinder onBind(Intent intent) {
+            return mBinder;
         }
 
-        if(command.equals("GET_SPECIFIC_MOVIE")) {
-            if(additionalCommand != null){
-                Movie dbMovie = db.movieDao().getMovie(Integer.valueOf(additionalCommand));
-                Intent returnToDetailActivity = new Intent("MOVIE_FROM_DB_BY_ID");
-                returnToDetailActivity.putExtra("MOVIE",dbMovie);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(returnToDetailActivity);
-            }
+        //Service Methods
 
-        }
+    public void getMoviesFromDB() {
+        AsyncTask.execute(() -> {
+            MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
+            List<Movie> db_movies = db.movieDao().getMovies();
+            Intent intent = new Intent(ACTION_FETCH_DB_MOVIES);
 
-        if(command.equals("ADD_MOVIE_FROM_API_ID")) {
-            if (additionalCommand != null){
-                APICommunication API = new APICommunication();
-                API.addMovieToDB(additionalCommand,this);
-            }
-        }
-
-        if(command.equals("SEARCH_MOVIES")) {
-            if (additionalCommand != null) {
-                APICommunication API = new APICommunication();
-                API.performSearch(additionalCommand,this);
-            }
-        }
-
-        if(command.equals("GET_POSTER")) {
-            if(additionalCommand != null){
-                String posterUrl = additionalCommand;
-                APICommunication API = new APICommunication();
-                API.getPoster(posterUrl,this);
-            }
-        }
-
-        if(command.equals("UPDATE_MOVIE")){
-            if(additionalCommand.equals("UPDATE")){
-                Movie movieToUpdate = intent.getParcelableExtra("MOVIE_TO_UPDATE");
-                db.movieDao().updateMovie(movieToUpdate);
-            }
-        }
-
-        if(command.equals("DELETE_MOVIE")) {
-            if (additionalCommand.equals("DELETE")) {
-                Movie movieToDelete = intent.getParcelableExtra("MOVIE_TO_DELETE");
-                db.movieDao().deleteMovie(movieToDelete);
-            }
-        }
+            intent.putParcelableArrayListExtra(RESULT_FETCH_DB_MOVIES, (ArrayList<? extends Parcelable>) db_movies);
+            sendBroadcast(intent);
+        });
     }
+
+    public void getSpecificMovieFromDB(int id) {
+        AsyncTask.execute(() -> {
+            MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
+            Movie dbMovie = db.movieDao().getMovie(id);
+            Intent intent = new Intent(ACTION_FETCH_DB_SPECIFIC_MOVIE);
+            intent.putExtra(RESULT_FETCH_DB_SPECIFIC_MOVIE,dbMovie);
+            sendBroadcast(intent);
+        });
+    }
+
+    public void performSearchAPI(String searchString) {
+        Gson gson = new Gson();
+        final List<Search> Search = new ArrayList();
+        String URL = URL_BY_SEARCH + searchString;
+        RequestQueue queue = RequestQueueSingelton.getInstance(getApplicationContext()).getRequestQueue();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, URL, null,
+                        response -> {
+                    Type type = new TypeToken<SearchResponse>() {}.getType();
+                    SearchResponse search = gson.fromJson(response.toString(), type);
+                    List<com.ITSMAP.movielist.JSONResponse.Search> SearchResult = search.getSearch();
+
+                    Intent intent = new Intent(ACTION_FETCH_SEARCH_TITLES);
+                    intent.putParcelableArrayListExtra(RESULT_FETCH_SEARCH_TITLES, (ArrayList<? extends Parcelable>) SearchResult);
+                    sendBroadcast(intent);
+                    }, error -> {
+                    // TODO: Handle error
+                    Log.e("ERROR", "onResponse: " + error.toString());
+                });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void addMovieFromSearch(String imdbId) {
+        Gson gson = new Gson();
+        String URL = URL_BY_IMDBID + imdbId;
+
+        RequestQueue queue = RequestQueueSingelton.getInstance(getApplicationContext()).getRequestQueue();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, URL, null,
+                        response -> {
+                    Log.d("SUCCESS", "onResponse: " + response.toString());
+                    Type type = new TypeToken<Movie>() {}.getType();
+
+                    Movie movie = gson.fromJson(response.toString(), type);
+                    MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
+                    AsyncTask.execute(() -> {
+                        db.movieDao().insertMovie(movie);
+                    });
+                    }, error -> {
+                    // TODO: Handle error
+                    Log.d("ERROR", "onResponse: " + error.toString());
+                });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void deleteMovieFromDB(Movie movie) {
+        AsyncTask.execute(() -> {
+            MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
+            db.movieDao().deleteMovie(movie);
+        });
+    }
+
+    public void updateMovieInDB(Movie movie) {
+        AsyncTask.execute(() -> {
+            MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
+            db.movieDao().updateMovie(movie);
+        });
+    }
+
 }

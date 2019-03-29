@@ -2,13 +2,14 @@ package com.ITSMAP.movielist.GUI;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
+import android.content.ServiceConnection;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,7 +18,7 @@ import android.widget.TextView;
 import com.ITSMAP.movielist.JSONResponse.Movie;
 import com.ITSMAP.movielist.R;
 import com.ITSMAP.movielist.Service.DataAccessService;
-import com.ITSMAP.movielist.drawableGenerator;
+import com.bumptech.glide.Glide;
 
 public class DetailsActivity extends AppCompatActivity {
     private ImageView poster;
@@ -29,58 +30,23 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView userCommentText;
     private TextView movieGenres;
     private Button OK_Btn;
-    private com.ITSMAP.movielist.drawableGenerator drawableGenerator;
-    private Movie databaseMovie;
-    private Context activityContext;
     private ProgressDialog progressDialog;
 
-    private BroadcastReceiver movieBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            databaseMovie = intent.getParcelableExtra("MOVIE");
-            getPoster();
-        }
-    };
-    private void getPoster(){
-        Intent getPoster = new Intent(this,DataAccessService.class);
-        getPoster.putExtra("COMMAND","GET_POSTER");
-        getPoster.putExtra("ADDITIONAL_COMMAND", databaseMovie.getPoster());
-        startService(getPoster);
-    }
-    private BroadcastReceiver posterBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bitmap poster = intent.getParcelableExtra("POSTER");
-            setPoster(poster);
-            updateUI(databaseMovie);
-            progressDialog.dismiss();
-        }
-    };
-
-    private void setPoster(Bitmap poster) {
-        if(poster != null){
-            this.poster.setImageBitmap(poster);
-        }
-    }
+    private DataAccessService mService;
+    MyReceiver mReciver;
+    boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        drawableGenerator = new drawableGenerator(this);
-        activityContext = this;
         progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching data from DB");
         initializeUI();
 
-        Intent intent = getIntent();
-        int movieId = intent.getIntExtra("MOVIE_DB_ID",5000);
 
-        Intent getMovieIntent = new Intent(this, DataAccessService.class);
-        getMovieIntent.putExtra("COMMAND", "GET_SPECIFIC_MOVIE");
-        getMovieIntent.putExtra("ADDITIONAL_COMMAND", String.valueOf(movieId));
-        startService(getMovieIntent);
-        progressDialog.setMessage("Fetching information");
-        progressDialog.show();
+        RegistorReciever();
+
         OK_Btn.setOnClickListener(v -> finish());
     }
 
@@ -99,7 +65,6 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void updateUI(com.ITSMAP.movielist.JSONResponse.Movie movie) {
-
         this.plot.setText(movie.getPlot());
         this.title.setText(movie.getTitle());
         this.iMDBRating.setText(String.format("%s%s", getString(R.string.details_iMDB), movie.getImdbRating()));
@@ -107,24 +72,77 @@ public class DetailsActivity extends AppCompatActivity {
         this.userRatingText.setText(movie.getPersonalRating() != null ? String.format("%s%s", getString(R.string.edit_activity_user_rating), movie.getPersonalRating()) : "");
         this.userCommentText.setText(movie.getUserComment());
         this.movieGenres.setText(String.format("%s%s", getString(R.string.details_genres_text), movie.getGenre()));
+        progressDialog.dismiss();
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        progressDialog.show();
+        Intent serviceIntent = new Intent(this, DataAccessService.class);
+        bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mReciver);
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(movieBroadcastReceiver,new IntentFilter("MOVIE_FROM_DB_BY_ID"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(posterBroadcastReceiver,new IntentFilter("POSTER_RESPONSE"));
+        RegistorReciever();
+    }
+
+    private void RegistorReciever() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_SPECIFIC_MOVIE);
+        mReciver = new MyReceiver();
+        registerReceiver(mReciver,intentFilter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(movieBroadcastReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(posterBroadcastReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            DataAccessService.LocalBinder binder = (DataAccessService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+            Intent intent = getIntent();
+            int movieId = intent.getIntExtra("MOVIE_DB_ID",5000);
+            mService.getSpecificMovieFromDB(movieId);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+    };
+
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            Movie movie = arg1.getParcelableExtra(DataAccessService.RESULT_FETCH_DB_SPECIFIC_MOVIE);
+            Glide.with(getApplicationContext()).load(movie.getPoster()).into(poster);
+            updateUI(movie);
+        }
     }
 }

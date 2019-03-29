@@ -1,11 +1,13 @@
 package com.ITSMAP.movielist.GUI;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -31,13 +33,10 @@ public class EditActivity extends AppCompatActivity {
     private float seekbarValue;
     private CheckBox watchedCheckbox;
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            databaseMovie = intent.getParcelableExtra("MOVIE");
-            updateUI(databaseMovie);
-        }
-    };
+    private DataAccessService mService;
+    MyReceiver mReciver;
+    boolean mBound = false;
+    boolean rotated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +45,11 @@ public class EditActivity extends AppCompatActivity {
         initializeUI();
         if(savedInstanceState != null){
             databaseMovie = savedInstanceState.getParcelable("MOVIE");
+            rotated = savedInstanceState.getBoolean("ROTATED");
             updateUI(databaseMovie);
         }
         else{
-            getServiceInformation();
+            registorReciever();
         }
 
         saveBtn.setOnClickListener(v -> {
@@ -92,40 +92,26 @@ public class EditActivity extends AppCompatActivity {
         databaseMovie.setPersonalRating(null);
         databaseMovie.setUserComment(null);
         databaseMovie.setWatched(false);
-        Intent updateMovieIntent = new Intent(this, DataAccessService.class);
-        updateMovieIntent.putExtra("COMMAND","UPDATE_MOVIE");
-        updateMovieIntent.putExtra("ADDITIONAL_COMMAND","UPDATE");
-        updateMovieIntent.putExtra("MOVIE_TO_UPDATE", databaseMovie);
-        startService(updateMovieIntent);
-        updateUI(databaseMovie);
+        mService.updateMovieInDB(databaseMovie);
+        finish();
     }
 
     private void deleteMovie(){
-        Intent updateMovieIntent = new Intent(this, DataAccessService.class);
-        updateMovieIntent.putExtra("COMMAND","DELETE_MOVIE");
-        updateMovieIntent.putExtra("ADDITIONAL_COMMAND","DELETE");
-        updateMovieIntent.putExtra("MOVIE_TO_DELETE", databaseMovie);
-        startService(updateMovieIntent);
+        mService.deleteMovieFromDB(databaseMovie);
     }
 
-    private void getServiceInformation() {
-        Intent intent = getIntent();
-        int movieId = intent.getIntExtra("MOVIE_DB_ID",5000);
-
-        Intent getMovieIntent = new Intent(this, DataAccessService.class);
-        getMovieIntent.putExtra("COMMAND", "GET_SPECIFIC_MOVIE");
-        getMovieIntent.putExtra("ADDITIONAL_COMMAND", String.valueOf(movieId));
-        startService(getMovieIntent);
+    private void registorReciever() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_SPECIFIC_MOVIE);
+        mReciver = new MyReceiver();
+        registerReceiver(mReciver,intentFilter);
     }
 
     private void saveChangesToDatabase(){
-        Intent updateMovieIntent = new Intent(this, DataAccessService.class);
+        databaseMovie.setUserComment(userComment.getText().toString());
         databaseMovie.setWatched(watchedCheckbox.isChecked());
-        databaseMovie.setUserComment(this.userComment.getText().toString());
-        updateMovieIntent.putExtra("COMMAND","UPDATE_MOVIE");
-        updateMovieIntent.putExtra("ADDITIONAL_COMMAND","UPDATE");
-        updateMovieIntent.putExtra("MOVIE_TO_UPDATE", databaseMovie);
-        startService(updateMovieIntent);
+        mService.updateMovieInDB(databaseMovie);
+        finish();
     }
 
     private void initializeUI() {
@@ -149,20 +135,70 @@ public class EditActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+            Intent serviceIntent = new Intent(this, DataAccessService.class);
+            bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mReciver);
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,new IntentFilter("MOVIE_FROM_DB_BY_ID"));
+        registorReciever();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            DataAccessService.LocalBinder binder = (DataAccessService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+            if(!rotated) {
+                Intent intent = getIntent();
+                int movieId = intent.getIntExtra("MOVIE_DB_ID",5000);
+                mService.getSpecificMovieFromDB(movieId);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+    };
+
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            databaseMovie = arg1.getParcelableExtra(DataAccessService.RESULT_FETCH_DB_SPECIFIC_MOVIE);
+            updateUI(databaseMovie);
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("MOVIE",databaseMovie);
+        outState.putBoolean("ROTATED",true);
     }
 }

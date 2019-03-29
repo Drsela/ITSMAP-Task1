@@ -82,7 +82,7 @@ public class APICommunication {
                         SearchResponse search = gson.fromJson(response.toString(), type);
                         List<Search> SearchResult = search.getSearch();
 
-                        Intent intent = new Intent("SEARCH_RESULT");
+                        Intent intent = new Intent("RESULT_FETCH_SEARCH_TITLES");
                         intent.putParcelableArrayListExtra("SEARCHED_MOVIES", (ArrayList<? extends Parcelable>) SearchResult);
                         LocalBroadcastManager.getInstance(serviceContext).sendBroadcast(intent);
                     }
