@@ -43,8 +43,14 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        getServiceInformation();
         initializeUI();
+        if(savedInstanceState != null){
+            databaseMovie = savedInstanceState.getParcelable("MOVIE");
+            updateUI(databaseMovie);
+        }
+        else{
+            getServiceInformation();
+        }
 
         saveBtn.setOnClickListener(v -> {
             saveChangesToDatabase();
@@ -136,7 +142,7 @@ public class EditActivity extends AppCompatActivity {
 
     private void updateUI(Movie movie) {
         this.movieTitle.setText(movie.getTitle());
-        this.userRating.setText((movie.getPersonalRating() != null) ? movie.getPersonalRating() : getString(R.string.no_prev_user_rating));
+        this.userRating.setText((movie.getPersonalRating() != null) ? String.format("%s%s", getString(R.string.edit_activity_user_rating), movie.getPersonalRating()) : getString(R.string.no_prev_user_rating));
         this.userRatingSeekbar.setProgress((movie.getPersonalRating() != null) ? Double.valueOf(Double.valueOf(movie.getPersonalRating())*10).intValue() : 50);  //Starts at 50%
         this.userComment.setText(movie.getUserComment());
         this.watchedCheckbox.setChecked(movie.isWatched());
@@ -154,4 +160,9 @@ public class EditActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("MOVIE",databaseMovie);
+    }
 }
