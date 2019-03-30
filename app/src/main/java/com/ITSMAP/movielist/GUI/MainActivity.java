@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
             movieAdapter.notifyDataSetChanged();
             Dialog.dismiss();
             Toast.makeText(MainActivity.this, "successful response fetched from DB", Toast.LENGTH_LONG).show();
+            createNotification(movieListDB);
+        }
+
+        private void createNotification(List<Movie> movies) {
         }
     }
 }

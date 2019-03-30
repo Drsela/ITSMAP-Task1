@@ -1,12 +1,17 @@
 package com.ITSMAP.movielist.Service;
 
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.ITSMAP.movielist.DAL.MovieDatabase;
@@ -14,6 +19,7 @@ import com.ITSMAP.movielist.DAL.RequestQueueSingelton;
 import com.ITSMAP.movielist.JSONResponse.Movie;
 import com.ITSMAP.movielist.JSONResponse.Search;
 import com.ITSMAP.movielist.JSONResponse.SearchResponse;
+import com.ITSMAP.movielist.R;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -23,6 +29,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DataAccessService extends Service {
     private final String API_KEY = "b453845";
@@ -37,7 +46,68 @@ public class DataAccessService extends Service {
 
     public static final String ACTION_FETCH_DB_SPECIFIC_MOVIE = "ACTION_FETCH_DB_SPECIFIC_MOVIE";
     public static final String RESULT_FETCH_DB_SPECIFIC_MOVIE = "ACTION_FETCH_DB_SPECIFIC_MOVIE";
+    private List<Movie> UpToDatoMovies;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        UpToDatoMovies = new ArrayList<>();
+        createNotificationListener();
+    }
 
+    private void createNotificationListener() {
+        Timer timer = new Timer();
+        int TWO_MINUTES = 1000*60*2;
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                createNotification();
+            }
+        },0,10000);
+    }
+
+    // Inspired by https://stackoverflow.com/questions/16045722/notification-not-showing
+    private void createNotification() {
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder  builder = new NotificationCompat.Builder(getApplicationContext(),"ChannelId");
+
+        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+
+        Random rand = new Random();
+        if(UpToDatoMovies.size() >= 1) {
+            Movie randomMovie = UpToDatoMovies.get(rand.nextInt(UpToDatoMovies.size()));
+            while (randomMovie.isWatched()) {
+                randomMovie = UpToDatoMovies.get(rand.nextInt(UpToDatoMovies.size()));
+            }
+            bigText.bigText("You should check it out!");
+            bigText.setBigContentTitle(randomMovie.getTitle());
+            bigText.setSummaryText("Unwatched Movie");
+        }
+        else if(UpToDatoMovies.size() == 0){
+           return;
+        }
+        else {
+            bigText.bigText("You must be a movie freak!");
+            bigText.setBigContentTitle("No unwatched movies");
+            bigText.setSummaryText("Congrats!");
+        }
+
+
+        builder.setSmallIcon(R.mipmap.eng_launcher_round);
+        builder.setPriority(Notification.PRIORITY_MAX);
+        builder.setStyle(bigText);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            String channelId = "Your_channel_id";
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+            builder.setChannelId(channelId);
+        }
+
+        notificationManager.notify(0, builder.build());
+    }
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -60,7 +130,8 @@ public class DataAccessService extends Service {
             MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
             List<Movie> db_movies = db.movieDao().getMovies();
             Intent intent = new Intent(ACTION_FETCH_DB_MOVIES);
-
+            UpToDatoMovies.clear();
+            UpToDatoMovies.addAll(db_movies);
             intent.putParcelableArrayListExtra(RESULT_FETCH_DB_MOVIES, (ArrayList<? extends Parcelable>) db_movies);
             sendBroadcast(intent);
         });
