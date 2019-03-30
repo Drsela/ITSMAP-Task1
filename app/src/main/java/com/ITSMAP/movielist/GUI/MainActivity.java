@@ -27,7 +27,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private MovieAdapter movieAdapter;
-    List<com.ITSMAP.movielist.JSONResponse.Movie> moviesList;
+    List<Movie> moviesList;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private ProgressDialog Dialog;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         exitBtn.setOnClickListener(v -> finish());
     }
 
-    private void RegistorReciever() {
+    private void registorReciever() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_MOVIES);
         mReciver = new MyReceiver();
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        RegistorReciever();
+        registorReciever();
         Intent serviceIntent = new Intent(this, DataAccessService.class);
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        RegistorReciever();
+        //registorReciever();
     }
 
     @Override

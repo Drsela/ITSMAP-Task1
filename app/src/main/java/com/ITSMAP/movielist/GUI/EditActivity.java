@@ -36,7 +36,7 @@ public class EditActivity extends AppCompatActivity {
     private DataAccessService mService;
     MyReceiver mReciver;
     boolean mBound = false;
-    boolean rotated;
+    boolean rotated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +48,7 @@ public class EditActivity extends AppCompatActivity {
             rotated = savedInstanceState.getBoolean("ROTATED");
             updateUI(databaseMovie);
         }
-        else{
-            registorReciever();
-        }
+
 
         saveBtn.setOnClickListener(v -> {
             saveChangesToDatabase();
@@ -137,8 +135,9 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-            Intent serviceIntent = new Intent(this, DataAccessService.class);
-            bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
+        registorReciever();
+        Intent serviceIntent = new Intent(this, DataAccessService.class);
+        bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -154,7 +153,6 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registorReciever();
     }
 
     @Override

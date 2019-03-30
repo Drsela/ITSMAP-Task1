@@ -45,11 +45,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_search);
         initView();
         Dialog = new ProgressDialog(this);
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(DataAccessService.ACTION_FETCH_SEARCH_TITLES);
-        mReciver = new MyReceiver();
-        registerReceiver(mReciver,intentFilter);
     }
 
     private void initView() {
@@ -87,6 +82,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onStart() {
         super.onStart();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DataAccessService.ACTION_FETCH_SEARCH_TITLES);
+        mReciver = new MyReceiver();
+        registerReceiver(mReciver,intentFilter);
+
+
         Intent serviceIntent = new Intent(this, DataAccessService.class);
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
     }

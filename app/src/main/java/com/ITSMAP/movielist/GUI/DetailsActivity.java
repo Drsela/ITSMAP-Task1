@@ -45,8 +45,6 @@ public class DetailsActivity extends AppCompatActivity {
         initializeUI();
 
 
-        RegistorReciever();
-
         OK_Btn.setOnClickListener(v -> finish());
     }
 
@@ -82,6 +80,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        registorReciever();
         progressDialog.show();
         Intent serviceIntent = new Intent(this, DataAccessService.class);
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
@@ -100,10 +99,9 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        RegistorReciever();
     }
 
-    private void RegistorReciever() {
+    private void registorReciever() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_SPECIFIC_MOVIE);
         mReciver = new MyReceiver();
