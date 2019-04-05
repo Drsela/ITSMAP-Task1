@@ -31,4 +31,7 @@ public interface MovieQueries {
     @Query("SELECT COUNT(id) FROM db_movies")
     Integer getNumberOfItemsInDB();
 
+    @Insert
+    void insertAll(Movie... movies);
+
 }

@@ -52,9 +52,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
         searchResults = new ArrayList<>();
-        Search search1 = new Search();
-        search1.setTitle("TESTING");
-        searchResults.add(search1);
 
         searchAdapter = new SearchAdapter(searchResults,this,SearchActivity.this);
         recycleView = findViewById(R.id.moviesFromSearchRecycleView);

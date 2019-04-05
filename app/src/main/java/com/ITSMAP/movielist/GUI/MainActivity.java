@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button exitBtn;
 
     private DataAccessService mService;
-    MyReceiver mReciver;
+    serviceReceiver mReciver;
     boolean mBound = false;
 
     @Override
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void registorReciever() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_MOVIES);
-        mReciver = new MyReceiver();
+        mReciver = new serviceReceiver();
         registerReceiver(mReciver,intentFilter);
     }
 
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private class MyReceiver extends BroadcastReceiver {
+    private class serviceReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
             List<Movie> movieListDB = arg1.getParcelableArrayListExtra(DataAccessService.RESULT_FETCH_DB_MOVIES);
@@ -129,10 +129,6 @@ public class MainActivity extends AppCompatActivity {
             movieAdapter.notifyDataSetChanged();
             Dialog.dismiss();
             Toast.makeText(MainActivity.this, "successful response fetched from DB", Toast.LENGTH_LONG).show();
-            createNotification(movieListDB);
-        }
-
-        private void createNotification(List<Movie> movies) {
         }
     }
 }

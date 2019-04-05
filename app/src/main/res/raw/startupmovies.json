@@ -1,0 +1,429 @@
+[
+  {
+    "Title": "Avengers: Infinity War",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "27 Apr 2018",
+    "Runtime": "149 min",
+    "Genre": "Action, Adventure, Sci-Fi",
+    "Director": "Anthony Russo, Joe Russo",
+    "Writer": "Christopher Markus (screenplay by), Stephen McFeely (screenplay by), Stan Lee (based on the Marvel comics by), Jack Kirby (based on the Marvel comics by), Joe Simon (Captain America created by), Jack Kirby (Captain America created by), Steve Englehart (Star-Lord created by), Steve Gan (Star-Lord created by), Bill Mantlo (Rocket Raccoon created by), Keith Giffen (Rocket Raccoon created by), Jim Starlin (Thanos, Gamora and Drax created by), Stan Lee (Groot created by), Larry Lieber (Groot created by), Jack Kirby (Groot created by), Steve Englehart (Mantis created by), Don Heck (Mantis created by)",
+    "Actors": "Robert Downey Jr., Chris Hemsworth, Mark Ruffalo, Chris Evans",
+    "Plot": "The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe.",
+    "Language": "English",
+    "Country": "USA",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "8.5/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "85%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "68/100"
+      }
+    ],
+    "Metascore": "68",
+    "imdbRating": "8.5",
+    "imdbVotes": "612,147",
+    "imdbID": "tt4154756",
+    "Type": "movie",
+    "DVD": "14 Aug 2018",
+    "BoxOffice": "$664,987,816",
+    "Production": "Walt Disney Pictures",
+    "Website": "http://marvel.com/movies/movie/223/avengers_infinity_war",
+    "Response": "True"
+  },
+  {
+    "Title": "Bohemian Rhapsody",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "02 Nov 2018",
+    "Runtime": "134 min",
+    "Genre": "Biography, Drama, Music",
+    "Director": "Bryan Singer",
+    "Writer": "Anthony McCarten (story by), Peter Morgan (story by), Anthony McCarten (screenplay by)",
+    "Actors": "Rami Malek, Lucy Boynton, Gwilym Lee, Ben Hardy",
+    "Plot": "The story of the legendary rock band Queen and lead singer Freddie Mercury, leading up to their famous performance at Live Aid (1985).",
+    "Language": "English",
+    "Country": "UK, USA",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMTA2NDc3Njg5NDVeQTJeQWpwZ15BbWU4MDc1NDcxNTUz._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "8.1/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "61%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "49/100"
+      }
+    ],
+    "Metascore": "49",
+    "imdbRating": "8.1",
+    "imdbVotes": "314,530",
+    "imdbID": "tt1727824",
+    "Type": "movie",
+    "DVD": "12 Feb 2019",
+    "BoxOffice": "N/A",
+    "Production": "20th Century Fox",
+    "Website": "http://www.bohemianrhapsody.com",
+    "Response": "True"
+  },
+  {
+    "Title": "A Star Is Born",
+    "Year": "2018",
+    "Rated": "R",
+    "Released": "05 Oct 2018",
+    "Runtime": "136 min",
+    "Genre": "Drama, Music, Romance",
+    "Director": "Bradley Cooper",
+    "Writer": "Eric Roth (screenplay by), Bradley Cooper (screenplay by), Will Fetters (screenplay by), Moss Hart (based on the 1954 screenplay by), John Gregory Dunne (based on the 1976 screenplay by), Joan Didion (based on the 1976 screenplay by), Frank Pierson (based on the 1976 screenplay by), William A. Wellman (based on a story by), Robert Carson (based on a story by)",
+    "Actors": "Lady Gaga, Bradley Cooper, Sam Elliott, Andrew Dice Clay",
+    "Plot": "A musician helps a young singer find fame as age and alcoholism send his own career into a downward spiral.",
+    "Language": "English",
+    "Country": "USA",
+    "Awards": "1 nomination.",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BNmE5ZmE3OGItNTdlNC00YmMxLWEzNjctYzAwOGQ5ODg0OTI0XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.8/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "89%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "88/100"
+      }
+    ],
+    "Metascore": "88",
+    "imdbRating": "7.8",
+    "imdbVotes": "222,511",
+    "imdbID": "tt1517451",
+    "Type": "movie",
+    "DVD": "19 Feb 2019",
+    "BoxOffice": "N/A",
+    "Production": "Warner Bros. Pictures",
+    "Website": "http://www.astarisbornmovie.com/",
+    "Response": "True"
+  },
+  {
+    "Title": "Deadpool 2",
+    "Year": "2018",
+    "Rated": "R",
+    "Released": "18 May 2018",
+    "Runtime": "119 min",
+    "Genre": "Action, Adventure, Comedy, Sci-Fi",
+    "Director": "David Leitch",
+    "Writer": "Rhett Reese, Paul Wernick, Ryan Reynolds",
+    "Actors": "Ryan Reynolds, Josh Brolin, Morena Baccarin, Julian Dennison",
+    "Plot": "Foul-mouthed mutant mercenary Wade Wilson (AKA. Deadpool), brings together a team of fellow mutant rogues to protect a young boy with supernatural abilities from the brutal, time-traveling cyborg, Cable.",
+    "Language": "English, Cantonese, Spanish, Russian",
+    "Country": "USA",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BNjk1Njk3YjctMmMyYS00Y2I4LThhMzktN2U0MTMyZTFlYWQ5XkEyXkFqcGdeQXVyODM2ODEzMDA@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.8/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "83%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "66/100"
+      }
+    ],
+    "Metascore": "66",
+    "imdbRating": "7.8",
+    "imdbVotes": "359,880",
+    "imdbID": "tt5463162",
+    "Type": "movie",
+    "DVD": "21 Aug 2018",
+    "BoxOffice": "N/A",
+    "Production": "20th Century Fox",
+    "Website": "https://www.foxmovies.com/movies/deadpool-2",
+    "Response": "True"
+  },
+  {
+    "Title": "Incredibles 2",
+    "Year": "2018",
+    "Rated": "PG",
+    "Released": "15 Jun 2018",
+    "Runtime": "118 min",
+    "Genre": "Animation, Action, Adventure, Comedy, Family, Sci-Fi",
+    "Director": "Brad Bird",
+    "Writer": "Brad Bird",
+    "Actors": "Craig T. Nelson, Holly Hunter, Sarah Vowell, Huck Milner",
+    "Plot": "The Incredibles hero family takes on a new mission, which involves a change in family roles: Bob Parr (Mr Incredible) must manage the house while his wife Helen (Elastigirl) goes out to save the world.",
+    "Language": "English",
+    "Country": "USA",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMTEzNzY0OTg0NTdeQTJeQWpwZ15BbWU4MDU3OTg3MjUz._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.7/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "94%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "80/100"
+      }
+    ],
+    "Metascore": "80",
+    "imdbRating": "7.7",
+    "imdbVotes": "185,186",
+    "imdbID": "tt3606756",
+    "Type": "movie",
+    "DVD": "23 Oct 2018",
+    "BoxOffice": "N/A",
+    "Production": "Disney/Pixar",
+    "Website": "http://movies.disney.com/the-incredibles-2",
+    "Response": "True"
+  },
+  {
+    "Title": "Mission: Impossible - Fallout",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "27 Jul 2018",
+    "Runtime": "147 min",
+    "Genre": "Action, Adventure, Thriller",
+    "Director": "Christopher McQuarrie",
+    "Writer": "Bruce Geller (based on the television series created by), Christopher McQuarrie",
+    "Actors": "Tom Cruise, Henry Cavill, Ving Rhames, Simon Pegg",
+    "Plot": "Ethan Hunt and his IMF team, along with some familiar allies, race against time after a mission gone wrong.",
+    "Language": "English, French",
+    "Country": "USA, China, France, Norway",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BNjRlZmM0ODktY2RjNS00ZDdjLWJhZGYtNDljNWZkMGM5MTg0XkEyXkFqcGdeQXVyNjAwMjI5MDk@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.8/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "97%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "86/100"
+      }
+    ],
+    "Metascore": "86",
+    "imdbRating": "7.8",
+    "imdbVotes": "218,877",
+    "imdbID": "tt4912910",
+    "Type": "movie",
+    "DVD": "04 Dec 2018",
+    "BoxOffice": "N/A",
+    "Production": "Paramount Pictures",
+    "Website": "https://www.missionimpossible.com/",
+    "Response": "True"
+  },
+  {
+    "Title": "Assassin's Creed 2",
+    "Year": "2019",
+    "Rated": "N/A",
+    "Released": "N/A",
+    "Runtime": "N/A",
+    "Genre": "Action, Adventure, History",
+    "Director": "N/A",
+    "Writer": "N/A",
+    "Actors": "Michael Fassbender",
+    "Plot": "N/A",
+    "Language": "N/A",
+    "Country": "USA, UK, France",
+    "Awards": "N/A",
+    "Poster": "N/A",
+    "Ratings": [],
+    "Metascore": "N/A",
+    "imdbRating": "N/A",
+    "imdbVotes": "N/A",
+    "imdbID": "tt5524126",
+    "Type": "movie",
+    "DVD": "N/A",
+    "BoxOffice": "N/A",
+    "Production": "N/A",
+    "Website": "N/A",
+    "Response": "True"
+  },
+  {
+    "Title": "Ready Player One",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "29 Mar 2018",
+    "Runtime": "140 min",
+    "Genre": "Action, Adventure, Sci-Fi",
+    "Director": "Steven Spielberg",
+    "Writer": "Zak Penn (screenplay by), Ernest Cline (screenplay by), Ernest Cline (based on the novel by)",
+    "Actors": "Tye Sheridan, Olivia Cooke, Ben Mendelsohn, Lena Waithe",
+    "Plot": "When the creator of a virtual reality world called the OASIS dies, he releases a video in which he challenges all OASIS users to find his Easter Egg, which will give the finder his fortune.",
+    "Language": "English",
+    "Country": "USA",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BY2JiYTNmZTctYTQ1OC00YjU4LWEwMjYtZjkwY2Y5MDI0OTU3XkEyXkFqcGdeQXVyNTI4MzE4MDU@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.5/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "72%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "64/100"
+      }
+    ],
+    "Metascore": "64",
+    "imdbRating": "7.5",
+    "imdbVotes": "285,173",
+    "imdbID": "tt1677720",
+    "Type": "movie",
+    "DVD": "03 Jul 2018",
+    "BoxOffice": "N/A",
+    "Production": "Warner Bros. Pictures",
+    "Website": "http://readyplayeronemovie.com/",
+    "Response": "True"
+  },
+  {
+    "Title": "First Man",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "12 Oct 2018",
+    "Runtime": "141 min",
+    "Genre": "Biography, Drama, History",
+    "Director": "Damien Chazelle",
+    "Writer": "Josh Singer (screenplay by), James R. Hansen (based on the book by)",
+    "Actors": "Ryan Gosling, Claire Foy, Jason Clarke, Kyle Chandler",
+    "Plot": "A look at the life of the astronaut, Neil Armstrong, and the legendary space mission that led him to become the first man to walk on the Moon on July 20, 1969.",
+    "Language": "English",
+    "Country": "USA, Japan",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMDBhOTMxN2UtYjllYS00NWNiLWE1MzAtZjg3NmExODliMDQ0XkEyXkFqcGdeQXVyMjMxOTE0ODA@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.4/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "87%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "84/100"
+      }
+    ],
+    "Metascore": "84",
+    "imdbRating": "7.4",
+    "imdbVotes": "110,022",
+    "imdbID": "tt1213641",
+    "Type": "movie",
+    "DVD": "22 Jan 2019",
+    "BoxOffice": "N/A",
+    "Production": "Universal Pictures",
+    "Website": "http://www.firstman.com",
+    "Response": "True"
+  },
+  {
+    "Title": "Black Panther",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "16 Feb 2018",
+    "Runtime": "134 min",
+    "Genre": "Action, Adventure, Sci-Fi",
+    "Director": "Ryan Coogler",
+    "Writer": "Ryan Coogler, Joe Robert Cole, Stan Lee (based on the Marvel comics by), Jack Kirby (based on the Marvel Comics by)",
+    "Actors": "Chadwick Boseman, Michael B. Jordan, Lupita Nyong'o, Danai Gurira",
+    "Plot": "T'Challa, heir to the hidden but advanced kingdom of Wakanda, must step forward to lead his people into a new future and must confront a challenger from his country's past.",
+    "Language": "English, Swahili, Nama, Xhosa, Korean",
+    "Country": "USA",
+    "Awards": "14 nominations.",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.3/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "97%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "88/100"
+      }
+    ],
+    "Metascore": "88",
+    "imdbRating": "7.3",
+    "imdbVotes": "486,841",
+    "imdbID": "tt1825683",
+    "Type": "movie",
+    "DVD": "15 May 2018",
+    "BoxOffice": "$501,105,037",
+    "Production": "Marvel Studios",
+    "Website": "https://www.marvel.com/movies/black-panther",
+    "Response": "True"
+  },
+  {
+    "Title": "Aquaman",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "21 Dec 2018",
+    "Runtime": "143 min",
+    "Genre": "Action, Adventure, Fantasy, Sci-Fi",
+    "Director": "James Wan",
+    "Writer": "David Leslie Johnson-McGoldrick (screenplay by), Will Beall (screenplay by), Geoff Johns (story by), James Wan (story by), Will Beall (story by), Mort Weisinger (Aquaman created by), Paul Norris (Aquaman created by)",
+    "Actors": "Jason Momoa, Amber Heard, Willem Dafoe, Patrick Wilson",
+    "Plot": "Arthur Curry, the human-born heir to the underwater kingdom of Atlantis, goes on a quest to prevent a war between the worlds of ocean and land.",
+    "Language": "English",
+    "Country": "Australia, USA",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.2/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "65%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "55/100"
+      }
+    ],
+    "Metascore": "55",
+    "imdbRating": "7.2",
+    "imdbVotes": "208,461",
+    "imdbID": "tt1477834",
+    "Type": "movie",
+    "DVD": "N/A",
+    "BoxOffice": "N/A",
+    "Production": "Warner Bros. Pictures",
+    "Website": "http://www.aquamanmovie.com/",
+    "Response": "True"
+  }
+]

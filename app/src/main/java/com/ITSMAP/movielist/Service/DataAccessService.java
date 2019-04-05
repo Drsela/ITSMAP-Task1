@@ -17,7 +17,6 @@ import android.util.Log;
 import com.ITSMAP.movielist.DAL.MovieDatabase;
 import com.ITSMAP.movielist.DAL.RequestQueueSingelton;
 import com.ITSMAP.movielist.JSONResponse.Movie;
-import com.ITSMAP.movielist.JSONResponse.Search;
 import com.ITSMAP.movielist.JSONResponse.SearchResponse;
 import com.ITSMAP.movielist.R;
 import com.android.volley.Request;
@@ -50,6 +49,7 @@ public class DataAccessService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        MovieDatabase.getMovieDatabase(this); //creating database to prepopulate it before getting items. Useful for first run.
         UpToDatoMovies = new ArrayList<>();
         createNotificationListener();
     }
@@ -62,7 +62,7 @@ public class DataAccessService extends Service {
             public void run() {
                 createNotification();
             }
-        },0,10000);
+        }, 0, TWO_MINUTES);
     }
 
     // Inspired by https://stackoverflow.com/questions/16045722/notification-not-showing
@@ -149,7 +149,6 @@ public class DataAccessService extends Service {
 
     public void performSearchAPI(String searchString) {
         Gson gson = new Gson();
-        final List<Search> Search = new ArrayList();
         String URL = URL_BY_SEARCH + searchString;
         RequestQueue queue = RequestQueueSingelton.getInstance(getApplicationContext()).getRequestQueue();
 
@@ -185,9 +184,7 @@ public class DataAccessService extends Service {
 
                     Movie movie = gson.fromJson(response.toString(), type);
                     MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
-                    AsyncTask.execute(() -> {
-                        db.movieDao().insertMovie(movie);
-                    });
+                            AsyncTask.execute(() -> db.movieDao().insertMovie(movie));
                     }, error -> {
                     // TODO: Handle error
                     Log.d("ERROR", "onResponse: " + error.toString());

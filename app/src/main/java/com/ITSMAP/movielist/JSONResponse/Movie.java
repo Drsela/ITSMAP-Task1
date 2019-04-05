@@ -6,8 +6,10 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -396,7 +398,7 @@ public class Movie implements Parcelable {
         this.country = in.readString();
         this.awards = in.readString();
         this.poster = in.readString();
-        this.ratings = new ArrayList<Rating>();
+        this.ratings = new ArrayList<>();
         in.readList(this.ratings, Rating.class.getClassLoader());
         this.metascore = in.readString();
         this.imdbRating = in.readString();
@@ -424,6 +426,12 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    public static List<Movie> populateFromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, new TypeToken<List<Movie>>() {
+        }.getType());
+    }
 }
 
 
