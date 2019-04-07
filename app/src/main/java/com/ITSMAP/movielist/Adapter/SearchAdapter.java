@@ -32,7 +32,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View contactView = inflater.inflate(R.layout.search_item, parent, false);
 
         return new ViewHolder(contactView);
@@ -42,7 +41,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder viewHolder, int i) {
         Search searchItem = searchList.get(i);
         viewHolder.movieTitle.setText(searchItem.getTitle());
-
     }
 
     @Override

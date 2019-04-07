@@ -33,10 +33,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private Button searchButton;
     private RecyclerView recycleView;
     List<Search> searchResults;
-    private ProgressDialog Dialog;
+    private ProgressDialog dialog;
 
     private DataAccessService mService;
-    MyReceiver mReciver;
+    private MyReceiver mReceiver;
     boolean mBound = false;
 
     @Override
@@ -44,7 +44,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         initView();
-        Dialog = new ProgressDialog(this);
+        dialog = new ProgressDialog(this);
     }
 
     private void initView() {
@@ -52,7 +52,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
         searchResults = new ArrayList<>();
-
         searchAdapter = new SearchAdapter(searchResults,this,SearchActivity.this);
         recycleView = findViewById(R.id.moviesFromSearchRecycleView);
         recycleView.setAdapter(searchAdapter);
@@ -69,8 +68,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 if(!searchTextBox.toString().isEmpty()) {
                     if(mBound){
                         mService.performSearchAPI(searchTextBox.getText().toString());
-                        Dialog.setMessage("Fetching movies from API");
-                        Dialog.show();
+                        dialog.setMessage("Fetching movies from API");
+                        dialog.show();
                     }
                 }
                 break;
@@ -82,9 +81,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DataAccessService.ACTION_FETCH_SEARCH_TITLES);
-        mReciver = new MyReceiver();
-        registerReceiver(mReciver,intentFilter);
-
+        mReceiver = new MyReceiver();
+        registerReceiver(mReceiver, intentFilter);
 
         Intent serviceIntent = new Intent(this, DataAccessService.class);
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
@@ -93,7 +91,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mReciver);
+        unregisterReceiver(mReceiver);
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
@@ -138,9 +136,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             searchResults.clear();
             searchResults.addAll(searchList);
             searchAdapter.notifyDataSetChanged();
-            Dialog.dismiss();
+            dialog.dismiss();
             Toast.makeText(getApplicationContext(), "successful response fetched from API", Toast.LENGTH_LONG).show();
         }
     }
-
 }

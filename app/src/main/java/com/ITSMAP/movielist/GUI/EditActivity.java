@@ -34,9 +34,9 @@ public class EditActivity extends AppCompatActivity {
     private CheckBox watchedCheckbox;
 
     private DataAccessService mService;
-    MyReceiver mReciver;
-    boolean mBound = false;
-    boolean rotated = false;
+    MyReceiver mReceiver;
+    private boolean mBound = false;
+    private boolean rotated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class EditActivity extends AppCompatActivity {
             rotated = savedInstanceState.getBoolean("ROTATED");
             updateUI(databaseMovie);
         }
-
 
         saveBtn.setOnClickListener(v -> {
             saveChangesToDatabase();
@@ -98,11 +97,11 @@ public class EditActivity extends AppCompatActivity {
         mService.deleteMovieFromDB(databaseMovie);
     }
 
-    private void registorReciever() {
+    private void registerReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_SPECIFIC_MOVIE);
-        mReciver = new MyReceiver();
-        registerReceiver(mReciver,intentFilter);
+        mReceiver = new MyReceiver();
+        registerReceiver(mReceiver, intentFilter);
     }
 
     private void saveChangesToDatabase(){
@@ -135,7 +134,7 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        registorReciever();
+        registerReceiver();
         Intent serviceIntent = new Intent(this, DataAccessService.class);
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -143,7 +142,7 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mReciver);
+        unregisterReceiver(mReceiver);
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
@@ -162,7 +161,6 @@ public class EditActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
     }
 

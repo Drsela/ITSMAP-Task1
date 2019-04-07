@@ -45,7 +45,15 @@ public class DataAccessService extends Service {
 
     public static final String ACTION_FETCH_DB_SPECIFIC_MOVIE = "ACTION_FETCH_DB_SPECIFIC_MOVIE";
     public static final String RESULT_FETCH_DB_SPECIFIC_MOVIE = "ACTION_FETCH_DB_SPECIFIC_MOVIE";
-    private List<Movie> UpToDatoMovies;
+    List<Movie> UpToDatoMovies;
+    private Timer timer;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -55,8 +63,8 @@ public class DataAccessService extends Service {
     }
 
     private void createNotificationListener() {
-        Timer timer = new Timer();
-        int TWO_MINUTES = 1000*60*2;
+        timer = new Timer();
+        int TWO_MINUTES = 1000 * 60 * 2;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -74,7 +82,11 @@ public class DataAccessService extends Service {
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
 
         Random rand = new Random();
-        if(UpToDatoMovies.size() >= 1) {
+        if (UpToDatoMovies.isEmpty()) {
+            return;
+        }
+
+        if (UpToDatoMovies.size() > 1) {
             Movie randomMovie = UpToDatoMovies.get(rand.nextInt(UpToDatoMovies.size()));
             while (randomMovie.isWatched()) {
                 randomMovie = UpToDatoMovies.get(rand.nextInt(UpToDatoMovies.size()));
@@ -83,15 +95,11 @@ public class DataAccessService extends Service {
             bigText.setBigContentTitle(randomMovie.getTitle());
             bigText.setSummaryText("Unwatched Movie");
         }
-        else if(UpToDatoMovies.size() == 0){
-           return;
-        }
         else {
             bigText.bigText("You must be a movie freak!");
             bigText.setBigContentTitle("No unwatched movies");
             bigText.setSummaryText("Congrats!");
         }
-
 
         builder.setSmallIcon(R.mipmap.eng_launcher_round);
         builder.setPriority(Notification.PRIORITY_MAX);
@@ -130,8 +138,7 @@ public class DataAccessService extends Service {
             MovieDatabase db = MovieDatabase.getMovieDatabase(getApplicationContext());
             List<Movie> db_movies = db.movieDao().getMovies();
             Intent intent = new Intent(ACTION_FETCH_DB_MOVIES);
-            UpToDatoMovies.clear();
-            UpToDatoMovies.addAll(db_movies);
+            UpToDatoMovies = db_movies;
             intent.putParcelableArrayListExtra(RESULT_FETCH_DB_MOVIES, (ArrayList<? extends Parcelable>) db_movies);
             sendBroadcast(intent);
         });

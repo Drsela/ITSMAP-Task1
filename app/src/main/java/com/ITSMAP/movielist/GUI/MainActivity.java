@@ -27,14 +27,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private MovieAdapter movieAdapter;
-    List<Movie> moviesList;
-    private FloatingActionButton fab;
+    private List<Movie> moviesList;
+    private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
-    private ProgressDialog Dialog;
+    private ProgressDialog dialog;
     private Button exitBtn;
-
     private DataAccessService mService;
-    serviceReceiver mReciver;
+    private serviceReceiver mReceiver;
     boolean mBound = false;
 
     @Override
@@ -43,19 +42,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initiateUI();
 
-        fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(v -> {
+        floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(v -> {
             Intent searchActivity = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(searchActivity);
         });
+        startService(new Intent(this, DataAccessService.class));
         exitBtn.setOnClickListener(v -> finish());
     }
 
-    private void registorReciever() {
+    private void registerReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_MOVIES);
-        mReciver = new serviceReceiver();
-        registerReceiver(mReciver,intentFilter);
+        mReceiver = new serviceReceiver();
+        registerReceiver(mReceiver, intentFilter);
     }
 
     private void initiateUI() {
@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         exitBtn = findViewById(R.id.main_btn_exit);
         moviesList = new ArrayList<>();
-        Dialog = new ProgressDialog(this);
-        Dialog.setMessage("Fetching from database");
-        Dialog.show();
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Fetching from database");
+        dialog.show();
         movieAdapter = new MovieAdapter(moviesList, this);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        registorReciever();
+        registerReceiver();
         Intent serviceIntent = new Intent(this, DataAccessService.class);
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mReciver);
+        unregisterReceiver(mReceiver);
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //registorReciever();
     }
 
     @Override
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             moviesList.clear();
             moviesList.addAll(movieListDB);
             movieAdapter.notifyDataSetChanged();
-            Dialog.dismiss();
+            dialog.dismiss();
             Toast.makeText(MainActivity.this, "successful response fetched from DB", Toast.LENGTH_LONG).show();
         }
     }

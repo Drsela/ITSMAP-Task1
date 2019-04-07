@@ -27,11 +27,4 @@ public interface MovieQueries {
 
     @Delete
     void deleteMovie(Movie movie);
-
-    @Query("SELECT COUNT(id) FROM db_movies")
-    Integer getNumberOfItemsInDB();
-
-    @Insert
-    void insertAll(Movie... movies);
-
 }

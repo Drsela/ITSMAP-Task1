@@ -240,30 +240,43 @@
     "Response": "True"
   },
   {
-    "Title": "Assassin's Creed 2",
-    "Year": "2019",
-    "Rated": "N/A",
-    "Released": "N/A",
-    "Runtime": "N/A",
-    "Genre": "Action, Adventure, History",
-    "Director": "N/A",
-    "Writer": "N/A",
-    "Actors": "Michael Fassbender",
-    "Plot": "N/A",
-    "Language": "N/A",
-    "Country": "USA, UK, France",
+    "Title": "Creed II",
+    "Year": "2018",
+    "Rated": "PG-13",
+    "Released": "21 Nov 2018",
+    "Runtime": "130 min",
+    "Genre": "Drama, Sport",
+    "Director": "Steven Caple Jr.",
+    "Writer": "Cheo Hodari Coker (story by), Ryan Coogler (characters), Sascha Penn (story by), Sylvester Stallone (screenplay by), Juel Taylor (screenplay by), Juel Taylor",
+    "Actors": "Michael B. Jordan, Sylvester Stallone, Tessa Thompson, Phylicia Rashad",
+    "Plot": "Under the tutelage of Rocky Balboa, heavyweight contender Adonis Creed faces off against Viktor Drago, son of Ivan Drago.",
+    "Language": "English, Russian",
+    "Country": "USA",
     "Awards": "N/A",
-    "Poster": "N/A",
-    "Ratings": [],
-    "Metascore": "N/A",
-    "imdbRating": "N/A",
-    "imdbVotes": "N/A",
-    "imdbID": "tt5524126",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMTcxMjUwNjQ5N15BMl5BanBnXkFtZTgwNjk4MzI4NjM@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.3/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "84%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "66/100"
+      }
+    ],
+    "Metascore": "66",
+    "imdbRating": "7.3",
+    "imdbVotes": "59,677",
+    "imdbID": "tt6343314",
     "Type": "movie",
-    "DVD": "N/A",
+    "DVD": "12 Feb 2019",
     "BoxOffice": "N/A",
-    "Production": "N/A",
-    "Website": "N/A",
+    "Production": "MGM",
+    "Website": "http://www.creedthemovie.com/",
     "Response": "True"
   },
   {

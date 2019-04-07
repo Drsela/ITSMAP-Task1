@@ -33,7 +33,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private DataAccessService mService;
-    MyReceiver mReciver;
+    private MyReceiver mReceiver;
     boolean mBound = false;
 
     @Override
@@ -43,7 +43,6 @@ public class DetailsActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Fetching data from DB");
         initializeUI();
-
 
         OK_Btn.setOnClickListener(v -> finish());
     }
@@ -77,10 +76,11 @@ public class DetailsActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-        registorReciever();
+        registerReceiver();
         progressDialog.show();
         Intent serviceIntent = new Intent(this, DataAccessService.class);
         bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
@@ -89,7 +89,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mReciver);
+        unregisterReceiver(mReceiver);
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
@@ -101,11 +101,11 @@ public class DetailsActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    private void registorReciever() {
+    private void registerReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DataAccessService.ACTION_FETCH_DB_SPECIFIC_MOVIE);
-        mReciver = new MyReceiver();
-        registerReceiver(mReciver,intentFilter);
+        mReceiver = new MyReceiver();
+        registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
