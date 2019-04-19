@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">MovieList</string>
+    <string name="app_name" translatable="false">AU557269 Movies</string>
     <string name="button_exit">Exit</string>
     <string name="details_userComment_text"><u>Comment</u></string>
     <string name="detail_userComment_text">Write a comment about this movie</string>
