@@ -15,7 +15,7 @@
         <activity android:name=".GUI.SearchActivity" />
         <activity android:name=".GUI.EditActivity" />
         <activity android:name=".GUI.DetailsActivity" />
-        <activity android:name=".GUI.MainActivity">
+        <activity android:name=".GUI.OverviewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -133,11 +133,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public void onReceive(Context arg0, Intent arg1) {
             List<Search> searchList = arg1.getParcelableArrayListExtra(DataAccessService.RESULT_FETCH_SEARCH_TITLES);
-            searchResults.clear();
-            searchResults.addAll(searchList);
-            searchAdapter.notifyDataSetChanged();
-            dialog.dismiss();
-            Toast.makeText(getApplicationContext(), "successful response fetched from API", Toast.LENGTH_LONG).show();
+            if (searchList != null) {
+                searchResults.clear();
+                searchResults.addAll(searchList);
+                searchAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "successful response fetched from API", Toast.LENGTH_LONG).show();
+            } else {
+                dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "No results. Check spelling or make new search", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

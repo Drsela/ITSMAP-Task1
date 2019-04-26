@@ -25,7 +25,7 @@ import com.ITSMAP.movielist.Service.DataAccessService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class OverviewActivity extends AppCompatActivity {
     private MovieAdapter movieAdapter;
     private List<Movie> moviesList;
     private FloatingActionButton floatingActionButton;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_overview);
         initiateUI();
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             moviesList.addAll(movieListDB);
             movieAdapter.notifyDataSetChanged();
             dialog.dismiss();
-            Toast.makeText(MainActivity.this, "successful response fetched from DB", Toast.LENGTH_LONG).show();
+            Toast.makeText(OverviewActivity.this, "successful response fetched from DB", Toast.LENGTH_LONG).show();
         }
     }
 }
